@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "start": "node server.js",
     "dev": "vue-cli-service serve --mode development",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "vue-cli-service serve --mode production",
+    "build": "vue-cli-service build --mode production",
+    "deploy": "git push heroku main --no-verify"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.19.3",
@@ -29,9 +30,8 @@
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.7.0"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+  "engines": {
+    "node": "14.x",
+    "npm": "6.x"
+  }
 }

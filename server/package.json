@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Backend for multi-org experiment",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ",
+    "dev": "",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aaron.wolbach@auth0.com",
+  "license": "MIT",
+  "dependencies": {
+    "auth0": "^2.37.0",
+    "axios": "^0.24.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-jwt": "^6.1.0",
+    "express-openid-connect": "^2.5.1",
+    "helmet": "^4.6.0"
+  }
+}

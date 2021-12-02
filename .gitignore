@@ -7,8 +7,8 @@ server/node_modules
 # local env files
 front/.env
 front/.env.*
-server/.env
-server/.env.*
+.env
+.env.*
 
 # Log files
 npm-debug.log*

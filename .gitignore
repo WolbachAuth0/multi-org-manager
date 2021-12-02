@@ -1,12 +1,8 @@
 .DS_Store
-front/node_modules
-server/node_modules
+node_modules
 /dist
 
-
 # local env files
-front/.env
-front/.env.*
 .env
 .env.*
 

@@ -1,20 +1,18 @@
 <template>
 	<v-app id="app">
 		<navigation></navigation>
-			
+		
+		<youtube-background></youtube-background>
+		
 		<v-fade-transition mode="out-in" duration type="animation">
-			<v-main>
-				
+			<v-main>		
 				<v-container fluid>
-					
 					<v-layout align-center justify-center>
 						<v-flex md10 sm12>
-        			<router-view></router-view>
+        			<router-view :key="$route.fullPath"></router-view>
 						</v-flex>
 					</v-layout>
-
 				</v-container>
-
 			</v-main>
 		</v-fade-transition>
 		
@@ -26,11 +24,13 @@
 
 <script>
 import Navigation from '@/components/Navigation'
+import YoutubeBackground from '@/components/YoutubeBackground'
 
 export default {
 	name: 'app',
 	components: {
-		Navigation
+		Navigation,
+		YoutubeBackground
 	},
 	metaInfo: {
 		title: 'Home',

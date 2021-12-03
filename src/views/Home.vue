@@ -1,19 +1,18 @@
 <template>
-  <v-container fluid>  
-    <v-layout align-center justify-center>
-      
-      <v-flex md10 sm12>
-        stuff stuff stuff 
-      </v-flex>
-
-    </v-layout>
-  </v-container>
+  <v-card>
+    <v-card-title>
+      {{ title }}
+    </v-card-title>
+  </v-card>
 </template>
 
 <script>
 export default {
-  data() {
-    return {}
+  name: 'Home',
+  data () {
+    return {
+      title: 'Home'
+    }
   }
 }
 </script>

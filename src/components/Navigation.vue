@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<!-- Application bar -->
 		<v-app-bar app clipped-left dense dark>
 			
       <v-toolbar-title class="float-left">
@@ -14,20 +15,16 @@
 			</v-toolbar-items>
 		</v-app-bar>
 
-		<v-navigation-drawer app floating :clipped="true" permanent expand-on-hover dark>
+		<!-- Navigation Drawer -->
+		<v-navigation-drawer app floating :clipped="true" permanent dark>
 			
 			<v-list>
-				<v-list-item class="px-2">
-					<v-list-item-avatar v-if="$auth.isAuthenticated">
+				<!-- The user avatar, or empty avatar with login  -->
+				<v-list-item v-if="$auth.isAuthenticated" class="px-2" link to="/profile">
+					<v-list-item-avatar>
 						<img :src="$auth.user.picture" :alt="$auth.user.name">
-					</v-list-item-avatar>
-					<v-list-item-avatar color="primary" v-else>
-						<v-icon x-large>{{ avatar }}</v-icon>
-					</v-list-item-avatar>
-				</v-list-item>
-
-				<v-list-item link v-if="$auth.isAuthenticated">
-					<v-list-item-content>
+					</v-list-item-avatar>					
+					<v-list-item-content v-if="$auth.isAuthenticated">
 						<v-list-item-title class="text-h6">
 							{{ $auth.user.name }}
 						</v-list-item-title>
@@ -36,6 +33,29 @@
 						</v-list-item-subtitle>
 					</v-list-item-content>
 				</v-list-item>
+
+				<v-list-item v-else class="px-2" link @click="authenticate()" >
+					<v-list-item-avatar color="primary">
+						<v-icon x-large>{{ mdiAccountCircle }}</v-icon>
+					</v-list-item-avatar>
+					<v-list-item-content>
+						<v-list-item-title class="text-h6">
+							<!-- Login -->
+						</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+
+				<!-- Login / Logout button -->
+				<v-list-item @click="authenticate()">
+					<v-list-item-icon>
+						<v-icon>{{ signInOut.icon }}</v-icon>
+					</v-list-item-icon>
+
+					<v-list-item-content>
+						<v-list-item-title>{{ signInOut.title }}</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+
 			</v-list>
 
 			<v-divider></v-divider>
@@ -51,16 +71,6 @@
 					</v-list-item-content>
 				</v-list-item>
 
-				<v-list-item href="#" @click="authenticate()">
-					<v-list-item-icon>
-						<v-icon>{{ signInOut.icon }}</v-icon>
-					</v-list-item-icon>
-
-					<v-list-item-content>
-						<v-list-item-title>{{ signInOut.title }}</v-list-item-title>
-					</v-list-item-content>
-				</v-list-item>
-
 			</v-list>
 		</v-navigation-drawer>
 	</div>
@@ -69,11 +79,12 @@
 <script>
 import {
 	mdiCogOutline,
-	mdiMonitorDashboard,
+	// mdiMonitorDashboard,
+	mdiHomeCircle,
 	mdiLogoutVariant,
 	mdiLoginVariant,
 	mdiAccountCircle, 
-	mdiInformationOutline 
+	// mdiInformationOutline 
 } from '@mdi/js'
 
 export default {
@@ -85,10 +96,10 @@ export default {
 	computed: {
 		routes() {
 			let routes = [
-				{ title: 'About', icon: mdiInformationOutline , to: '/', auth: false },
-				{ title: 'Profile', icon: mdiAccountCircle , to: '/profile', auth: true },
-				{ title: 'Setttings', icon: mdiCogOutline , to: '/settings', auth: true },
-				{ title: 'Dashboard', icon: mdiMonitorDashboard , to: '/dashboard', auth: true },
+				{ title: 'Home', icon: mdiHomeCircle , to: '/', auth: false },
+				// { title: 'Profile', icon: mdiAccountCircle , to: '/profile', auth: true },
+				{ title: 'Debug', icon: mdiCogOutline , to: '/debug', auth: true },
+				// { title: 'Dashboard', icon: mdiMonitorDashboard , to: '/dashboard', auth: true },
 			]
 			return this.$auth.isAuthenticated ? routes : routes.filter(x => !x.auth)
 		},
@@ -98,14 +109,11 @@ export default {
 				title: this.$auth.isAuthenticated ? 'Log Out' : 'Log In',
 			}
 		},
-		avatar() {
+		mdiAccountCircle() {
 			return mdiAccountCircle
 		}
 	},
 	methods: {
-		toggleDrawer() {
-			this.drawer = !this.drawer
-		},
 		// https://auth0.com/blog/complete-guide-to-vue-user-authentication/#Add-User-Authentication
 		async authenticate() {
 			if (this.$auth.isAuthenticated) {

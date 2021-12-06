@@ -1,17 +1,21 @@
 <template>
 	<div>
 		<!-- Application bar -->
-		<v-app-bar app clipped-left dense dark>
+		<v-app-bar app clipped-left dark>
+			<v-btn plain float-left max-height="50" href="https://auth0.com/" target="__blank">
+				<v-img :src="shield" contain max-height="40"></v-img>
+			</v-btn>
 			
-      <v-toolbar-title class="float-left">
-				<v-img :src="logo" contain max-height="50"></v-img>
+      <v-toolbar-title >
+				Organization Manager Experiment
 			</v-toolbar-title>
 
 			<v-spacer></v-spacer>
+
 			<v-toolbar-items>
-				<v-avatar rounded color="white" size="48">
-					<v-img :src="shieldSRC" contain max-height="50"></v-img>
-				</v-avatar>
+				<v-btn plain max-height="50" href="https://auth0.com/docs" target="__blank">
+					<v-img :src="auth0docs" contain max-height="50"></v-img>
+				</v-btn>
 			</v-toolbar-items>
 		</v-app-bar>
 
@@ -79,19 +83,18 @@
 <script>
 import {
 	mdiCogOutline,
-	// mdiMonitorDashboard,
 	mdiHomeCircle,
 	mdiLogoutVariant,
 	mdiLoginVariant,
 	mdiAccountCircle, 
-	// mdiInformationOutline 
 } from '@mdi/js'
 
 export default {
 	name: 'Navigation',
 	data: () => ({
 		shieldSRC: 'https://cdn.auth0.com/manhattan/versions/1.3435.0/assets/./badge.png',
-		logo: require('../assets/auth0.svg')
+		shield: require('../assets/shield.svg'),
+		auth0docs: require('../assets/auth0docs.svg')
 	}),
 	computed: {
 		routes() {

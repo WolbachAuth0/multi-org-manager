@@ -103,12 +103,12 @@ export default {
     // get the raw access token
     const accesstoken  = await this.$auth.getTokenSilently()
     this.accessToken = {
-      header: accesstoken.split('.')[0],
-      body: accesstoken.split('.')[1],
-      signature: accesstoken.split('.')[2]
+      header: accesstoken ? accesstoken.split('.')[0] : '',
+      body: accesstoken ? accesstoken.split('.')[1] : '',
+      signature: accesstoken ? accesstoken.split('.')[2] : ''
     }
     // decode the access token
-    this.accessTokenDecoded = parseJwt(accesstoken)
+    this.accessTokenDecoded = accesstoken ? parseJwt(accesstoken) : {}
     
     function parseJwt(token) {
       const base64Payload = token.split('.')[1]

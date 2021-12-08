@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node start.js",
+    "local": "nodemon start.js NODE_ENV=development",
     "dev": "vue-cli-service serve --mode development",
     "serve": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build --mode production",
@@ -12,6 +13,7 @@
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.19.3",
     "@mdi/js": "^6.5.95",
+    "auth0": "^2.37.0",
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
@@ -31,6 +33,7 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "dotenv": "^10.0.0",
+    "nodemon": "^2.0.15",
     "sass": "~1.32.0",
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-vuetify": "~2.4.4",

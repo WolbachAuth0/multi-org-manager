@@ -10,7 +10,7 @@ const oidcMiddleware = auth({
   issuerBaseURL: `https://${process.env.VUE_APP_AUTH0_DOMAIN}`,
   baseURL: process.env.VUE_APP_DOMAIN,
   clientID: process.env.VUE_APP_AUTH0_CLIENT_ID,
-  secret: process.env.AUTH0_CLIENT_SECRET,
+  secret: process.env.AUTH0_API_CLIENT_SECRET,
   idpLogout: true,
 })
 

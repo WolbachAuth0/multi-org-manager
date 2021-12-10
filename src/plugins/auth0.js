@@ -6,7 +6,7 @@
  
 /** Define a default action to perform after authentication */
 const DEFAULT_REDIRECT_CALLBACK = () => window.history.replaceState({}, document.title, window.location.pathname)
-const DEFAULT_REDIRECT_URI = process.env.VUE_APP_DOMAIN
+const DEFAULT_REDIRECT_URI = `${process.env.VUE_APP_DOMAIN}/dashboard`
  
 let instance
 

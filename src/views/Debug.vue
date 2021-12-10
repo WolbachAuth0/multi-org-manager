@@ -1,65 +1,65 @@
 <template>
-<div>
-  <v-card elevation="2" outlined class="ma-3 pa-3">
-    <v-card-title>Identity Token</v-card-title>
-    <v-divider></v-divider>
+  <div>
+    <v-card elevation="2" outlined class="ma-3 pa-3">
+      <v-card-title>Identity Token</v-card-title>
+      <v-divider></v-divider>
 
-    <v-row>
-      <v-col cols="6">
-        <code class="token" v-if="showIDToken">
-          <span class="header">{{ idToken.header }}</span>
-          <span>.</span>
-          <span class="body">{{ idToken.body }}</span>
-          <span>.</span>
-          <span class="signature">{{ idToken.signature }}</span>
-        </code>
-      </v-col>
+      <v-row>
+        <v-col cols="6">
+          <code class="token" v-if="showIDToken">
+            <span class="header">{{ idToken.header }}</span>
+            <span>.</span>
+            <span class="body">{{ idToken.body }}</span>
+            <span>.</span>
+            <span class="signature">{{ idToken.signature }}</span>
+          </code>
+        </v-col>
 
-      <v-col cols="6">
-        <pre class="json" v-if="showIDToken">{{ userJSON | pretty }}</pre>
-      </v-col>
-    </v-row>
+        <v-col cols="6">
+          <pre class="json" v-if="showIDToken">{{ userJSON | pretty }}</pre>
+        </v-col>
+      </v-row>
 
-    <v-divider></v-divider>
+      <v-divider></v-divider>
 
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" outlined @click="showIDToken = !showIDToken">
-        {{ showIDToken ? 'Hide Token' : 'Show Token' }}
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" outlined @click="showIDToken = !showIDToken">
+          {{ showIDToken ? 'Hide Token' : 'Show Token' }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
 
-  <v-card elevation="2" outlined class="ma-3 pa-3">
-    <v-card-title>Access Token</v-card-title>
-    <v-divider></v-divider>
-    
-    <v-row>
-      <v-col cols="6" >
-        <code class="token" v-if="showAccessToken">
-          <span class="header">{{ accessToken.header }}</span>
-          <span>.</span>
-          <span class="body">{{ accessToken.body }}</span>
-          <span>.</span>
-          <span class="signature">{{ accessToken.signature }}</span>
-        </code>
-      </v-col>
+    <v-card elevation="2" outlined class="ma-3 pa-3">
+      <v-card-title>Access Token</v-card-title>
+      <v-divider></v-divider>
+      
+      <v-row>
+        <v-col cols="6" >
+          <code class="token" v-if="showAccessToken">
+            <span class="header">{{ accessToken.header }}</span>
+            <span>.</span>
+            <span class="body">{{ accessToken.body }}</span>
+            <span>.</span>
+            <span class="signature">{{ accessToken.signature }}</span>
+          </code>
+        </v-col>
 
-      <v-col cols="6">
-        <pre class="json" v-if="showAccessToken">{{ tokenJSON | pretty }}</pre>
-      </v-col>
-    </v-row>
+        <v-col cols="6">
+          <pre class="json" v-if="showAccessToken">{{ tokenJSON | pretty }}</pre>
+        </v-col>
+      </v-row>
 
-    <v-divider></v-divider>
+      <v-divider></v-divider>
 
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" outlined @click="showAccessToken = !showAccessToken">
-        {{ showAccessToken ? 'Hide Token' : 'Show Token' }}
-      </v-btn>
-    </v-card-actions>
-  </v-card>
-</div>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" outlined @click="showAccessToken = !showAccessToken">
+          {{ showAccessToken ? 'Hide Token' : 'Show Token' }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
 
 <script>

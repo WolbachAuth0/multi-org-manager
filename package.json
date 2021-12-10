@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node start.js",
-    "local": "nodemon start.js NODE_ENV=development",
-    "dev": "vue-cli-service serve --mode development",
+    "dev-front": "vue-cli-service serve --mode development",
+    "dev-api": "nodemon start.js",
     "serve": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build --mode production",
     "deploy": "git push heroku main --no-verify"
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "dotenv": "^10.0.0",
+    "dotenv-flow": "^3.2.0",
     "nodemon": "^2.0.15",
     "sass": "~1.32.0",
     "sass-loader": "^10.0.0",

@@ -5,7 +5,7 @@ import { authenticationGuard } from "@/helpers/authenticationGuard";
 
 // Views
 import Home from '@/views/Home.vue'
-import Profile from '@/views/Profile.vue'
+import Dashboard from '@/views/Dashboard.vue'
 import Debug from '@/views/Debug.vue'
 
 // Vue.use(Meta, {
@@ -23,7 +23,7 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     { path: '/', name: 'Welcome', component: Home },
-    { path: '/profile', name: 'profile', component: Profile, beforeEnter: authenticationGuard },
+    { path: '/dashboard', name: 'Dashboard', component: Dashboard, beforeEnter: authenticationGuard },
     { path: '/debug', name: 'Debug', component: Debug, beforeEnter: authenticationGuard }
   ]
 })

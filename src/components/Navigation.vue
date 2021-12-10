@@ -84,6 +84,7 @@
 import {
 	mdiCogOutline,
 	mdiHomeCircle,
+	mdiMonitorDashboard,
 	mdiLogoutVariant,
 	mdiLoginVariant,
 	mdiAccountCircle, 
@@ -101,8 +102,8 @@ export default {
 			let routes = [
 				{ title: 'Home', icon: mdiHomeCircle , to: '/', auth: false },
 				// { title: 'Profile', icon: mdiAccountCircle , to: '/profile', auth: true },
-				{ title: 'Debug', icon: mdiCogOutline , to: '/debug', auth: true },
-				// { title: 'Dashboard', icon: mdiMonitorDashboard , to: '/dashboard', auth: true },
+				{ title: 'Dashboard', icon: mdiMonitorDashboard , to: '/dashboard', auth: true },
+				{ title: 'Debug', icon: mdiCogOutline , to: '/debug', auth: true }
 			]
 			return this.$auth.isAuthenticated ? routes : routes.filter(x => !x.auth)
 		},

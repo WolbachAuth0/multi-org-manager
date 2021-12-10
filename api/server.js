@@ -24,13 +24,11 @@ app.use(express.json())
 app.use(cors())
 app.use(helmet({ contentSecurityPolicy: false }))
 
-// must use secure socket layers
-if(process.env.NODE_ENV === 'production') { app.use(enforceHTTPS) }
-
-// Auth0 middleware for OIDC ... (for protecting admin views)
+if(process.env.NODE_ENV === 'production') {
+  // oidc will not work without https
+  app.use(enforceHTTPS)
+}
 app.use(oidcMiddleware)
-
-// here we are configuring dist to serve app files
 app.use('/', serveStatic(path.join(__dirname, './../dist')))
 
 // API routes

@@ -40,8 +40,13 @@ export default {
 		return {}
 	},
 	mounted() {
-		console.log('clientid: ', process.env.VUE_APP_AUTH0_CLIENT_ID)
-		console.log('domain: ', process.env.VUE_APP_AUTH0_DOMAIN)
+		if (process.env.VUE_APP_MODE === 'development') {
+			console.log('node_env: ', process.env.NODE_ENV)
+			console.log('clientid: ', process.env.VUE_APP_AUTH0_CLIENT_ID)
+			console.log('auth0 domain: ', process.env.VUE_APP_AUTH0_DOMAIN)
+			console.log('vue app api host: ', process.env.VUE_APP_API_HOST)
+			console.log('vue app domain: ', process.env.VUE_APP_DOMAIN)
+		}
 	}
 }
 </script>

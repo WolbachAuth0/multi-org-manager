@@ -39,7 +39,7 @@ router
   // .all(verifyJWT)
   .route('/:org_id')
   .get(
-    // checkJWTScopes(['read:organization_members'], options),
+    // checkJWTScopes(['read:organizations'], options),
     async (req, res) => {
       const id = req.params.org_id
       let status = 200

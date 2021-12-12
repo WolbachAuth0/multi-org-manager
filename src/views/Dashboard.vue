@@ -21,7 +21,7 @@
     <v-card-title>
       {{ title }}
     </v-card-title>
-    
+
   </v-card>
 </div>
 </template>

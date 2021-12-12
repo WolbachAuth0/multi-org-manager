@@ -16,7 +16,9 @@
         </v-col>
 
         <v-col cols="6">
-          <pre class="json" v-if="showIDToken">{{ userJSON | pretty }}</pre>
+          <pre class="json" v-if="showIDToken">
+            {{ userJSON | pretty }}
+          </pre>
         </v-col>
       </v-row>
 

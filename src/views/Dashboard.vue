@@ -15,6 +15,7 @@
       <v-col cols="10">
         {{ alert.text }}
       </v-col>
+    </v-row>
   </v-snackbar>
 
   <v-card>
@@ -28,6 +29,7 @@
 
 <script>
 import {
+  mdiAccountCircle,
   mdiCloudCheckOutline,
   mdiCloudAlert
 } from '@mdi/js';
@@ -46,7 +48,8 @@ export default {
         text: '',
         color: 'green',
         icon: mdiCloudCheckOutline
-      }
+      },
+      mdiAccountCircle
     }
   },
   async mounted () {
@@ -68,13 +71,13 @@ export default {
       const orgID = this.$auth.user.org_id
       const accesstoken = await this.$auth.getTokenSilently()
       const response = await this.$http(accesstoken).get(`/organizations/${orgID}`)
-      response.data
+      return response.data
     },
     async fetchOrgMembers () {
       const orgID = this.$auth.user.org_id
       const accesstoken = await this.$auth.getTokenSilently()
       const response = await this.$http(accesstoken).get(`/organizations/${orgID}/members`)
-      response.data
+      return response.data
     }
   }
 }

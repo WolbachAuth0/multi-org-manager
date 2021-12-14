@@ -1,62 +1,72 @@
 <template>
 <div>
-  <v-snackbar v-model="alert.visible" :timeout="5000" top right :color="alert.color">
-    <template v-slot:action="{ attrs }">
-      <v-btn text v-bind="attrs" @click="alert.visible = false">
-        Close
-      </v-btn>
-    </template>
-    <v-row>
-      <v-col cols="2">
-        <v-avatar color="primary">
-          <v-icon x-large>{{ alert.icon }}</v-icon>
-        </v-avatar>
-      </v-col>
-      <v-col cols="10">
-        {{ alert.text }}
-      </v-col>
-    </v-row>
-  </v-snackbar>
+  <announcer :visible="announcement.visible"
+             :text="announcement.text"
+             :type="announcement.type"
+  ></announcer>
 
   <v-card>
     <v-card-title>
-      {{ title }}
+      {{ org.display_name }}
+    </v-card-title>
+  </v-card>
+
+  <v-card>
+    <v-card-title>
+      Members
     </v-card-title>
     
-    <ul>
-      <li v-for="member of members" :key="member.user_id">
-        {{ member.name }}
-      </li>
-    </ul>
+    <v-card-title>
+      <v-text-field v-model="table.search" append-icon="mdi-magnify" label="Search Organization Members ..." single-line hide-details></v-text-field>
+    </v-card-title>
 
+    <v-data-table :headers="table.headers" :items="members" :search="table.search">
+      <template v-slot:item.picture="{ item }">
+        <v-tooltip>
+          <template v-slot:activator="{ on, attrs }">
+            <v-avatar>
+              <img :src="item.picture" :alt="item.user_id">
+            </v-avatar>
+          </template>
+          <span>user_id: {{ item.user_id }}</span>
+        </v-tooltip>
+      </template>
+    </v-data-table>
 
   </v-card>
 </div>
 </template>
 
 <script>
-import {
-  mdiAccountCircle,
-  mdiCloudCheckOutline,
-  mdiCloudAlert
-} from '@mdi/js';
+import Announcer from '../components/Announcer.vue'
+import { mdiAccountCircle } from '@mdi/js'
 
 export default {
+  components: { Announcer },
   name: 'Dashboard',
   data () {
     return {
-      title: 'Dashboard',
       user: {},
       org: {},
-      members: [],
-      alert: {
-        visible: false,
-        title: 'Success !',
-        text: '',
-        color: 'green',
-        icon: mdiCloudCheckOutline
+      table: {
+        search: '',
+        headers: [
+          { text: '', align: 'start', value: 'picture', filterable: false, sortable: false },
+          // { text: 'ID', filterable: false, value: 'user_id' },
+          { text: 'Name', value: 'name', filterable: true, sortable: true },
+          { text: 'Email', value: 'email', filterable: true, sortable: true }
+        ] 
       },
-      mdiAccountCircle
+      members: [],
+      
+      announcement: {
+        visible: false,
+        text: '',
+        type: 'success',
+      },
+      icons: {
+        mdiAccountCircle,
+      }
     }
   },
   async mounted () {
@@ -67,18 +77,14 @@ export default {
     const members = await this.fetchOrgMembers()
     this.org = org.data
     this.members = members.data
-    console.log(org, members)
-    if (org.success && members.success) {
-      this.alert.title = 'Success !'
-      this.alert.text = 'We fetched the data from the API.'
-      this.alert.icon = mdiCloudCheckOutline
-      this.alert.visible = true
-    } else {
-      this.alert.title = 'Warning !'
-      this.alert.text = 'An Error occurred while access http resources.'
-      this.alert.color = 'red'
-      this.alert.icon = mdiCloudAlert
-      this.alert.visible = true
+
+    const success = org.success && members.success
+    this.announcement.type = success ? 'success' : 'error' 
+    this.announcement.text = `${org.message}<br/>${members.message}`
+    this.announcement.visible = true
+
+    if (!success) {
+      console.log(org.data, members.data)
     }
   },
   methods: {

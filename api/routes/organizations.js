@@ -20,10 +20,11 @@ router
     async (req, res) => {
       const id = req.params.org_id
       let status = 200
-      let message = `found members of organization: ${id}`
+      let message = ``
       let data = []
       try {
         data = await management.organizations.getMembers({ id })
+        message = `Found ${data.length} members of organization.`
       } catch (error) {
         status = parseInt(error.statusCode) || 500
         message = error.message
@@ -43,10 +44,11 @@ router
     async (req, res) => {
       const id = req.params.org_id
       let status = 200
-      let message = `found members of organization: ${id}`
+      let message = ``
       let data = []
       try {
         data = await management.organizations.getByID({ id })
+        message = `Found details for "${data.display_name}".`
       } catch (error) {
         status = parseInt(error.statusCode) || 500
         message = error.message

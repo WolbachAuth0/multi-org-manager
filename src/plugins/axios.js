@@ -9,11 +9,14 @@ export default {
         baseURL: process.env.VUE_APP_API_HOST,
         timeout,
         headers: {
-          'Authorization': `Bearer ${accesstoken}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         }
       }
+      if (accesstoken) {
+        request.headers['Authorization'] = `Bearer ${accesstoken}`
+      }
+
       const http = axios.create(request)
       return http
     }

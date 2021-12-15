@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const enforceHTTPS = require('./middleware/enforceHTTPS')
 const { oidcMiddleware } = require('./middleware/auth')
-const { routerLogger, errorLogger } = require('./models/Logger')
+const { routerLogger, errorLogger } = require('./models/logger')
 
 const app = express()
 

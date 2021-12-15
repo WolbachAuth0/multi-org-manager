@@ -1,10 +1,50 @@
 <template>
   <v-card>
     <v-card-title>
-      {{ title }}
+      Organization Manager
     </v-card-title>
+    
+    <v-card-subtitle>
+      Purpose
+    </v-card-subtitle>
     <v-card-text>
-      Welcome to the Organization Manager. Please login to view the dashboard.
+      The purpose of this application is to demonstrate how a single page application (SPA) can be used to provide
+      managers of an Auth0 organization the ability to manage their organization.
+    </v-card-text>
+    
+    <v-card-subtitle>
+      Description
+    </v-card-subtitle>
+    <v-card-text>
+      
+    </v-card-text>
+
+    <v-list v-if="organizations.length" flat>
+      <v-subheader>Organizations Found</v-subheader>
+      <v-list-item-group v-model="selectedOrg" color="primary">
+        <v-list-item v-for="(item, i) in organizations" :key="i">
+          
+          <v-list-item-icon>
+            <v-avatar tile>
+              <v-img :src="item.branding.logo_url" max-height="40" max-width="40" ></v-img>
+            </v-avatar>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title v-text="item.name"></v-list-item-title>
+            <v-list-item-title v-text="item.display_name"></v-list-item-title>
+          </v-list-item-content>
+
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+
+
+    <v-card-subtitle>
+      Instructions
+    </v-card-subtitle>
+    <v-card-text>
+      Please log in to get started.
     </v-card-text>
   </v-card>
 </template>
@@ -14,7 +54,25 @@ export default {
   name: 'Home',
   data () {
     return {
-      title: 'Home'
+      selectedOrg: 0,
+      organizations: []
+    }
+  },
+  async mounted () {
+    if (process.env.VUE_APP_MODE === 'development') {
+      console.log('mounted: Home')
+    }
+    const orgs = await this.getOrganizations()
+    this.organizations = orgs.data
+
+    if (!orgs.success) {
+      console.log(orgs)
+    }
+  },
+  methods: {
+    async getOrganizations () {
+      const response = await this.$http(null).get(`/organizations`)
+      return response.data
     }
   }
 }

@@ -6,85 +6,84 @@
   ></announcer>
 
   <v-card>
+
     <v-card-title>
+      <v-avatar tile>
+        <v-img :src="org.branding.logo_url" max-height="40" max-width="40" ></v-img>
+      </v-avatar>
       {{ org.display_name }}
     </v-card-title>
+
+    <v-tabs v-model="tab">
+      <v-tabs-slider color="blue"></v-tabs-slider>
+
+      <v-tab key="overview">Overview</v-tab>
+      <v-tab key="members">Members</v-tab>
+      <v-tab key="invitations">Invitations</v-tab>
+      <v-tab key="connections">Connections</v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab">
+      <v-tab-item key="overview">
+        <org-overview></org-overview>
+      </v-tab-item>
+
+      <v-tab-item key="members">
+        <org-members></org-members>
+      </v-tab-item>
+
+      <v-tab-item key="invitations">
+        Invitations
+      </v-tab-item>
+
+      <v-tab-item key="connections">
+        connections
+      </v-tab-item>
+    </v-tabs-items>
+
   </v-card>
 
-  <v-card>
-    <v-card-title>
-      Members
-    </v-card-title>
-    
-    <v-card-title>
-      <v-text-field v-model="table.search" append-icon="mdi-magnify" label="Search Organization Members ..." single-line hide-details></v-text-field>
-    </v-card-title>
-
-    <v-data-table :headers="table.headers" :items="members" :search="table.search">
-      <template v-slot:item.picture="{ item }">
-        <v-tooltip>
-          <template v-slot:activator="{ on, attrs }">
-            <v-avatar>
-              <img :src="item.picture" :alt="item.user_id">
-            </v-avatar>
-          </template>
-          <span>user_id: {{ item.user_id }}</span>
-        </v-tooltip>
-      </template>
-    </v-data-table>
-
-  </v-card>
 </div>
 </template>
 
 <script>
 import Announcer from '../components/Announcer.vue'
-import { mdiAccountCircle } from '@mdi/js'
+import OrgOverview from '../components/OrgOverview.vue'
+import OrgMembers from '../components/OrgMembers.vue'
 
 export default {
-  components: { Announcer },
+  components: {
+    Announcer,
+    OrgOverview,
+    OrgMembers
+  },
   name: 'Dashboard',
   data () {
     return {
+      tab: null,
       user: {},
       org: {},
-      table: {
-        search: '',
-        headers: [
-          { text: '', align: 'start', value: 'picture', filterable: false, sortable: false },
-          // { text: 'ID', filterable: false, value: 'user_id' },
-          { text: 'Name', value: 'name', filterable: true, sortable: true },
-          { text: 'Email', value: 'email', filterable: true, sortable: true }
-        ] 
-      },
-      members: [],
-      
       announcement: {
         visible: false,
         text: '',
         type: 'success',
-      },
-      icons: {
-        mdiAccountCircle,
       }
     }
   },
   async mounted () {
     if (process.env.VUE_APP_MODE === 'development') {
-      console.log('mounted')
+      console.log('mounted: Dashboard')
     }
     const org = await this.fetchOrg()
-    const members = await this.fetchOrgMembers()
     this.org = org.data
-    this.members = members.data
 
-    const success = org.success && members.success
+    const success = org.success
     this.announcement.type = success ? 'success' : 'error' 
-    this.announcement.text = `${org.message}<br/>${members.message}`
+    this.announcement.text = org.message
     this.announcement.visible = true
 
     if (!success) {
-      console.log(org.data, members.data)
+      console.log(org.data)
     }
   },
   methods: {
@@ -92,12 +91,6 @@ export default {
       const orgID = this.$auth.user.org_id
       const accesstoken = await this.$auth.getTokenSilently()
       const response = await this.$http(accesstoken).get(`/organizations/${orgID}`)
-      return response.data
-    },
-    async fetchOrgMembers () {
-      const orgID = this.$auth.user.org_id
-      const accesstoken = await this.$auth.getTokenSilently()
-      const response = await this.$http(accesstoken).get(`/organizations/${orgID}/members`)
       return response.data
     }
   }

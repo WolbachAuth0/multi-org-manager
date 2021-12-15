@@ -12,13 +12,13 @@ if (process.env.NODE_ENV !== 'production') {
 
 const enforceHTTPS = require('./middleware/enforceHTTPS')
 const { oidcMiddleware } = require('./middleware/auth')
-// const { routerLogger, errorLogger } = require('./lib/Logger')
+const { routerLogger, errorLogger } = require('./models/Logger')
 
 const app = express()
 
 // middleware ...
 app.use(express.json())
-// app.use(routerLogger)
+app.use(routerLogger)
 
 // TODO: decide if you want a whitelist or just have a global API.
 app.use(cors())
@@ -44,5 +44,8 @@ app.get(/.*/, (req, res) => {
     res.json({ success: false, message: "Something went wrong" });
   }
 })
+
+// express-winston errorLogger AFTER the other routes have been defined.
+app.use(errorLogger)
 
 module.exports = app

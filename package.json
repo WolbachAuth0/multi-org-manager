@@ -20,14 +20,16 @@
     "express": "^4.17.1",
     "express-jwt": "^6.1.0",
     "express-jwt-authz": "^2.4.1",
-    "express-openid-connect": "^2.5.1",
+    "express-openid-connect": "^2.5.2",
+    "express-winston": "^4.2.0",
     "helmet": "^4.6.0",
     "jwks-rsa": "^2.0.5",
     "serve-static": "^1.14.1",
     "vue": "^2.6.11",
     "vue-content-loading": "^1.6.0",
     "vue-router": "^3.5.3",
-    "vuetify": "^2.4.0"
+    "vuetify": "^2.4.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

@@ -22,7 +22,7 @@
     <v-list v-if="organizations.length" flat>
       <v-subheader>Organizations Found</v-subheader>
       <v-list-item-group v-model="selectedOrg" color="primary">
-        <v-list-item v-for="(item, i) in organizations" :key="i">
+        <v-list-item v-for="(item, i) in organizations" :key="i" @click="authenticate(item.id)">
           
           <v-list-item-icon>
             <v-avatar tile>
@@ -73,7 +73,17 @@ export default {
     async getOrganizations () {
       const response = await this.$http(null).get(`/organizations`)
       return response.data
-    }
+    },
+    // https://auth0.com/blog/complete-guide-to-vue-user-authentication/#Add-User-Authentication
+		async authenticate(organization) {
+			if (this.$auth.isAuthenticated) {
+        this.$router.push({ path: '/dashboard' })
+			} else {
+				// https://auth0.github.io/auth0-spa-js/interfaces/redirectloginoptions.html
+				const scope = [ 'openid', 'profile', 'email' ].join(' ')
+				this.$auth.loginWithRedirect({ scope, organization })
+			}
+		}
   }
 }
 </script>

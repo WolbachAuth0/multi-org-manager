@@ -1,17 +1,15 @@
 <template>
-<div>
-  <announcer :visible="announcement.visible"
-             :text="announcement.text"
-             :type="announcement.type"
-  ></announcer>
-
   <v-card>
 
     <v-card-title>
-      <v-avatar tile>
+      <v-avatar tile v-if="logoIsAvailable">
         <v-img :src="org.branding.logo_url" max-height="40" max-width="40" ></v-img>
       </v-avatar>
-      {{ org.display_name }}
+      <v-avatar tile v-else>
+        <v-progress-circular :size="40" color="primary" indeterminate></v-progress-circular>
+      </v-avatar>
+
+      <h2 v-if="orgNameIsAvailable">{{ org.display_name }}</h2>
     </v-card-title>
 
     <v-tabs v-model="tab">
@@ -42,18 +40,15 @@
     </v-tabs-items>
 
   </v-card>
-
-</div>
 </template>
 
 <script>
-import Announcer from '../components/Announcer.vue'
+
 import OrgOverview from '../components/OrgOverview.vue'
 import OrgMembers from '../components/OrgMembers.vue'
 
 export default {
   components: {
-    Announcer,
     OrgOverview,
     OrgMembers
   },
@@ -63,27 +58,22 @@ export default {
       tab: null,
       user: {},
       org: {},
-      announcement: {
-        visible: false,
-        text: '',
-        type: 'success',
-      }
+      orgAvailable: false,
     }
   },
   async mounted () {
     if (process.env.VUE_APP_MODE === 'development') {
       console.log('mounted: Dashboard')
     }
-    const org = await this.fetchOrg()
-    this.org = org.data
-
-    const success = org.success
-    this.announcement.type = success ? 'success' : 'error' 
-    this.announcement.text = org.message
-    this.announcement.visible = true
-
-    if (!success) {
-      console.log(org.data)
+    const response = await this.fetchOrg()
+    this.org = response.data
+  },
+  computed: {
+    logoIsAvailable () {
+      return this.org && this.org.branding && this.org.branding.logo_url
+    },
+    orgNameIsAvailable () {
+      return this.org && this.org.display_name
     }
   },
   methods: {

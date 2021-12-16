@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-card class="pa-6">
-      
       <v-row>
         <v-col cols="6">
           <v-card-title>Basic Info</v-card-title>
@@ -132,11 +131,12 @@
         </v-col>
       </v-row>
     </v-card>
-      
   </div>
 </template>
 
 <script>
+import EventBus from '../helpers/eventBus.js'
+
 export default {
   name: 'Organization',
   data () {
@@ -191,12 +191,6 @@ export default {
   async mounted () {
     const response = await this.fetchOrg()
     this.org = response.data
-    const announcement = {
-      text: response.message,
-      type: response.success ? 'success' : 'error'
-    }
-    this.$emit('announcement', announcement)
-
     if (process.env.VUE_APP_MODE === 'development') {
       console.log('mounted: Organization', response)
     }
@@ -213,7 +207,22 @@ export default {
       // const accesstoken = await this.$auth.getTokenSilently()
       // const response = await this.$http(accesstoken).put(`/organizations/${orgID}`, this.org)
       // return response.data
-      console.log('UPDATE ORG: ', this.org)
+      const announcement = {
+        text: 'TODO: Should update Organization.',
+        type: 'success'
+      }
+      EventBus.$emit('announce', announcement)
+
+      console.log(this.org)
+    },
+    async addMetadata () {
+      const announcement = {
+        text: 'TODO: Should update Organization metadata.',
+        type: 'success'
+      }
+      EventBus.$emit('announce', announcement)
+
+      console.log(this.org.metadata)
     },
     computeLightness (hex) {
       // parse the RGB value from the hex color

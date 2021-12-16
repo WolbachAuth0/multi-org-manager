@@ -43,7 +43,6 @@
 </template>
 
 <script>
-
 import OrgOverview from '../components/OrgOverview.vue'
 import OrgMembers from '../components/OrgMembers.vue'
 

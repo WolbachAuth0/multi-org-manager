@@ -51,11 +51,17 @@ export default {
     }    
   },
   async mounted () {
-    if (process.env.VUE_APP_MODE === 'development') {
-      console.log('mounted: Organization')
-    }
     const response = await this.fetchOrg()
     this.org = response.data
+    const announcement = {
+      text: response.message,
+      type: response.success ? 'success' : 'error'
+    }
+    this.$emit('announcement', announcement)
+
+    if (process.env.VUE_APP_MODE === 'development') {
+      console.log('mounted: Organization', response)
+    }
   },
   methods: {
     async fetchOrg () {

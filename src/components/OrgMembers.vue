@@ -26,6 +26,7 @@
 
 <script>
 import { mdiAccountCircle } from '@mdi/js'
+import EventBus from '../helpers/eventBus.js'
 
 export default {
   name: 'OrgMembers',
@@ -45,12 +46,18 @@ export default {
     }
   },
   async mounted () {
-    if (process.env.VUE_APP_MODE === 'development') {
-      console.log('mounted: OrgMembers')
-    }
     const response = await this.fetchOrgMembers()
     this.members = response.data
-    console.log(response.data)
+    const announcement = {
+      text: response.message,
+      type: response.success ? 'success' : 'error'
+    }
+    EventBus.$emit('announce', announcement)
+
+    if (process.env.VUE_APP_MODE === 'development') {
+      console.log('mounted: OrgMembers')
+      console.log(response.data)
+    }
   },
   methods: {
     async fetchOrgMembers () {

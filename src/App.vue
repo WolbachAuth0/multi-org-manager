@@ -2,6 +2,8 @@
 	<v-app id="app">
 		<navigation></navigation>
 		
+		<announcer :visible="alert.visible" :text="alert.text" :type="alert.type"></announcer>
+
 		<youtube-background></youtube-background>
 		
 		<v-fade-transition mode="out-in" duration type="animation">
@@ -23,29 +25,47 @@
 </template>
 
 <script>
-import Navigation from '@/components/Navigation'
-import YoutubeBackground from '@/components/YoutubeBackground'
+import Announcer from './components/Announcer.vue'
+import Navigation from './components/Navigation.vue'
+import YoutubeBackground from './components/YoutubeBackground.vue'
+import EventBus from './helpers/eventBus.js'
 
 export default {
 	name: 'app',
 	components: {
+		Announcer,
 		Navigation,
 		YoutubeBackground
 	},
+	// TODO: need to install the vue-meta package to get this to work.
 	metaInfo: {
 		title: 'Home',
 		titleTemplate: 'Aaron Wolbach | %s'
 	},
 	data() {
-		return {}
+		return {
+			alert: {
+        visible: false,
+        text: '',
+        type: 'success',
+      }
+		}
 	},
-	mounted() {
+	create() {
 		if (process.env.VUE_APP_MODE === 'development') {
 			console.log('node_env: ', process.env.NODE_ENV)
 			console.log('clientid: ', process.env.VUE_APP_AUTH0_CLIENT_ID)
 			console.log('auth0 domain: ', process.env.VUE_APP_AUTH0_DOMAIN)
 			console.log('vue app api host: ', process.env.VUE_APP_API_HOST)
 			console.log('vue app domain: ', process.env.VUE_APP_DOMAIN)
+		}
+		EventBus.$on('announce', this.makeAnnouncement)
+	},
+	methods: {
+		makeAnnouncement ({ text='announcement text', type='success' }) {
+			this.alert.text = text
+			this.alert.type = type
+			this.alert.visible = true 
 		}
 	}
 }

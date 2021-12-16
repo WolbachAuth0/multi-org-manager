@@ -2,7 +2,12 @@
 	<v-app id="app">
 		<navigation></navigation>
 		
-		<announcer :visible="alert.visible" :text="alert.text" :type="alert.type"></announcer>
+		<announcer :visible="alert.visible"
+							 :text="alert.text"
+							 :type="alert.type"
+							 @show="show"
+							 @hide="hide"
+		></announcer>
 
 		<youtube-background></youtube-background>
 		
@@ -51,7 +56,7 @@ export default {
       }
 		}
 	},
-	create() {
+	mounted() {
 		if (process.env.VUE_APP_MODE === 'development') {
 			console.log('node_env: ', process.env.NODE_ENV)
 			console.log('clientid: ', process.env.VUE_APP_AUTH0_CLIENT_ID)
@@ -66,6 +71,14 @@ export default {
 			this.alert.text = text
 			this.alert.type = type
 			this.alert.visible = true 
+		},
+		show (payload) {
+			console.log('show: payload = ', payload)
+			this.alert.visible = true
+		},
+		hide (payload) {
+			console.log('hide: payload = ', payload)
+			this.alert.visible = false
 		}
 	}
 }

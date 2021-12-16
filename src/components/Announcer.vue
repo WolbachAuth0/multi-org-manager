@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="isShown" :timeout="timeout" top right outlined :color="color">
+  <v-snackbar v-model="isShown" :timeout="timeout" top right :outlined="outlined" :color="color">
     <template v-slot:action="{ attrs }">
       <v-btn text v-bind="attrs" @click="isShown = false">
         Close
@@ -28,6 +28,7 @@ export default {
   name: 'Announcer',
   data () {
     return {
+      outlined: false,
       isShown: false
     }
   },
@@ -55,6 +56,14 @@ export default {
   watch: {
     visible (newValue, oldValue) {
       this.isShown = newValue
+    },
+    isShown(newValue, oldValue) {
+      if (newValue) {
+        this.$emit('show', true)
+      } else {
+        this.$emit('hide', false)
+      }
+      
     }
   }
 }

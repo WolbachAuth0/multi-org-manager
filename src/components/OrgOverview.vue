@@ -15,11 +15,14 @@
                         :hint="hints.name"
                         :disabled="readOnly"
           ></v-text-field>
+          <v-card-text class="grey--text">{{ hints.name }}</v-card-text>
+
           <v-text-field v-model="org.display_name"
                         :label="labels.display_name"
                         :hint="hints.display_name"
                         :disabled="readOnly"
           ></v-text-field>
+          <v-card-text class="grey--text">{{ hints.display_name }}</v-card-text>
         </v-col>
       </v-row>
       
@@ -38,6 +41,7 @@
                         prepend-icon="mdi-link-variant"
                         :disabled="readOnly"
           ></v-text-field>
+          <v-card-text class="grey--text">{{ hints.logo_url }}</v-card-text>
 
           <v-text-field v-model="org.branding.colors.primary" 
                         :label="labels.primary" 
@@ -45,6 +49,7 @@
                         prepend-icon="mdi-palette" 
                         :disabled="readOnly"
           ></v-text-field>
+          <v-card-text class="grey--text">{{ hints.primary }}</v-card-text>
 
           <v-text-field v-model="org.branding.colors.page_background" 
                         :label="labels.background" 
@@ -52,6 +57,7 @@
                         prepend-icon="mdi-palette"
                         :disabled="readOnly"
           ></v-text-field>
+          <v-card-text class="grey--text">{{ hints.background }}</v-card-text>
 
         </v-col>
 
@@ -70,6 +76,9 @@
 
               <v-card-text class="text-center blue-grey lighten-4 my-2">
               </v-card-text>
+
+              <v-card-subtitle class="justify-center blue-grey lighten-4 my-2">
+              </v-card-subtitle>
 
               <v-card-subtitle class="justify-center blue-grey lighten-4 my-2">
               </v-card-subtitle>
@@ -97,16 +106,6 @@
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col cols="12">
-          <v-card-actions> 
-            <v-btn color="primary" @click="updateOrg">
-              Save
-            </v-btn>
-          </v-card-actions>
-        </v-col>
-      </v-row>
-
       <v-divider></v-divider>
 
       <v-card-title>Metadata</v-card-title>
@@ -116,11 +115,19 @@
 
       <v-row>
         <v-col cols="5">
-          <v-text-field v-model="metadataKey" label="key ..." :disabled="readOnly"></v-text-field>
+          <v-text-field v-model="metadata.key"
+                        label="key ..." 
+                        :disabled="false"
+                        prepend-icon="mdi-key-outline"
+          ></v-text-field>
         </v-col>
 
         <v-col cols="5">
-          <v-text-field v-model="metadataValue" label="value ..." :disabled="readOnly"></v-text-field>
+          <v-text-field v-model="metadata.value"
+                        label="value ..."
+                        :disabled="false"
+                        prepend-icon="mdi-tag-outline"
+          ></v-text-field>
         </v-col>
 
         <v-col cols="2">
@@ -130,6 +137,30 @@
           </v-btn>
         </v-col>
       </v-row>
+
+      <v-data-table :headers="metadata.headers"
+                    :items="metadata.items"
+                    hide-default-footer
+      >
+        <template v-slot:[`item.index`]="{ item }">
+          <v-btn icon color="red" @click="removeMetadata(item.key)">
+              <v-icon>mdi-trash-can-outline</v-icon>
+            </v-btn>
+        </template>
+      </v-data-table>
+
+      <v-divider></v-divider>
+
+      <v-row>
+        <v-col cols="12">
+          <v-card-actions> 
+            <v-btn color="primary" @click="updateOrg">
+              Save Changes
+            </v-btn>
+          </v-card-actions>
+        </v-col>
+      </v-row>
+
     </v-card>
   </div>
 </template>
@@ -165,11 +196,18 @@ export default {
             primary: '#7C64A5',
             page_background: '#322D6B'
           }
-        },
-        metadata: {}
+        }
       },
-      metadataKey: null,
-      metadataValue: null
+      metadata: {
+        key: null,
+        value: null,
+        items: [],
+        headers: [
+          { text: 'Key', value: 'key', filterable: false, sortable: false },
+          { text: 'Value', value: 'value', filterable: false, sortable: false },
+          { text: '', value: 'index' },
+        ]
+      }
     }    
   },
   computed: {
@@ -186,14 +224,45 @@ export default {
       const classname = l <= 50 ? 'text-center white--text' : 'text-center black--text'
       console.log(`hex: ${hex}, L: ${l}%, class="${classname}"`)
       return classname
+    },
+    metadataLimit () {
+      const count = Object.keys(this.metadata.items).length
+      return 10 - count
+    },
+    metadataObject () {
+      const metadata = {}
+      for (let item of this.metadata.items) {
+        metadata[item.key] = item.value
+      }
+      return metadata
     }
   },
   async mounted () {
     const response = await this.fetchOrg()
-    this.org = response.data
     if (process.env.VUE_APP_MODE === 'development') {
       console.log('mounted: Organization', response)
     }
+
+    const org = response.data
+    this.org.id = org.id
+    this.org.name = org.name
+    this.org.display_name = org.display_name
+    this.org.branding = {
+      logo_url: org.branding.logo_url,
+      colors: {
+        primary: org.branding.colors.primary,
+        page_background: org.branding.colors.page_background
+      }
+    }
+
+    this.metadata.items = Object.keys(org.metadata)
+      .map(key => {
+        return {
+          key,
+          value: org.metadata[key],
+          index: key
+        }
+      })
   },
   methods: {
     async fetchOrg () {
@@ -215,14 +284,28 @@ export default {
 
       console.log(this.org)
     },
-    async addMetadata () {
-      const announcement = {
-        text: 'TODO: Should update Organization metadata.',
-        type: 'success'
+    addMetadata () {
+      // is this key already in the metadata?
+      const key = this.metadata.key
+      const value = this.metadata.value
+      const index = this.metadata.items.findIndex(x => x.key == key)
+      if (index > -1) {
+        // then update it ...
+        this.metadata.items[index].value = this.metadata.value
+        this.metadata.items[index].index = key
+      } else {
+        // add a new one ...
+        const item = { key, value, index: key }
+        this.metadata.items.push(item)
       }
-      EventBus.$emit('announce', announcement)
-
-      console.log(this.org.metadata)
+      this.metadata.key = null
+      this.metadata.value = null
+    },
+    removeMetadata (key) {
+      const index = this.metadata.items.findIndex(x => x.key == key)
+      if (index > -1) {
+        this.metadata.items.splice(index, 1);
+      }
     },
     computeLightness (hex) {
       // parse the RGB value from the hex color

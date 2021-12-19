@@ -3,49 +3,33 @@
     <v-card-title>
       Organization Manager
     </v-card-title>
-    
-    <v-card-subtitle>
-      Purpose
-    </v-card-subtitle>
     <v-card-text>
-      The purpose of this application is to demonstrate how a single page application (SPA) can be used to provide
-      managers of an Auth0 organization the ability to manage their organization.
-    </v-card-text>
-    
-    <v-card-subtitle>
-      Description
-    </v-card-subtitle>
-    <v-card-text>
-      
-    </v-card-text>
+        The purpose of this application is to demonstrate how a single page application (SPA) can be used to provide
+        managers of an Auth0 organization the ability to manage their organization.
+      </v-card-text>
 
-    <v-list v-if="organizations.length" flat>
-      <v-subheader>Organizations Found</v-subheader>
-      <v-list-item-group v-model="selectedOrg" color="primary">
-        <v-list-item v-for="(item, i) in organizations" :key="i" @click="authenticate(item.id)">
-          
-          <v-list-item-icon>
-            <v-avatar tile>
-              <v-img :src="item.branding.logo_url" max-height="40" max-width="40" ></v-img>
-            </v-avatar>
-          </v-list-item-icon>
+    <v-card class="pa-6" outlined>
+      <v-card-title>
+        Organizations Found
+      </v-card-title>
+      <v-list v-if="organizations.length" flat>
+        <v-list-item-group v-model="selectedOrg" color="primary">
+          <v-list-item v-for="(item, i) in organizations" :key="i" @click="authenticate(item.id)">
+            
+            <v-list-item-icon>
+              <v-avatar tile>
+                <v-img :src="item.branding.logo_url" max-height="40" max-width="40" ></v-img>
+              </v-avatar>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title v-text="item.name"></v-list-item-title>
-            <v-list-item-title v-text="item.display_name"></v-list-item-title>
-          </v-list-item-content>
+            <v-list-item-content>
+              <v-list-item-title>({{ item.name }}) {{ item.display_name }}</v-list-item-title>
+            </v-list-item-content>
 
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-
-
-    <v-card-subtitle>
-      Instructions
-    </v-card-subtitle>
-    <v-card-text>
-      Please log in to get started.
-    </v-card-text>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-card>
   </v-card>
 </template>
 

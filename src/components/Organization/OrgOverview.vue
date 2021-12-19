@@ -1,150 +1,148 @@
 <template>
-  <div>
-    <v-card class="pa-6" color="blue lighten-5">
-      <v-card-title>Basic Info</v-card-title>
-      <v-card-text>
-        These are basic details needed to set up your organization.
-      </v-card-text>
-      
-      <v-card class="pa-6">
-        <v-row>
-          <v-col cols="6">
-            <v-text-field v-model="org.name" 
-                          :label="labels.name"
-                          :hint="hints.name"
-                          :disabled="readOnly"
-            ></v-text-field>
-            <v-card-text class="grey--text">{{ hints.name }}</v-card-text>
-          </v-col>
+  <v-card class="pa-6" color="blue lighten-5">
+    <v-card-title>Basic Info</v-card-title>
+    <v-card-text>
+      These are basic details needed to set up your organization.
+    </v-card-text>
+    
+    <v-card class="pa-6">
+      <v-row>
+        <v-col cols="6">
+          <v-text-field v-model="org.name" 
+                        :label="labels.name"
+                        :hint="hints.name"
+                        :disabled="readOnly"
+          ></v-text-field>
+          <v-card-text class="grey--text">{{ hints.name }}</v-card-text>
+        </v-col>
 
-          <v-col cols="6">
-            <v-text-field v-model="org.display_name"
-                          :label="labels.display_name"
-                          :hint="hints.display_name"
-                          :disabled="readOnly"
-            ></v-text-field>
-            <v-card-text class="grey--text">{{ hints.display_name }}</v-card-text>
-          </v-col>
-        </v-row>
-      </v-card>
-
-      <v-divider></v-divider>
-      
-      <v-card-title>Branding</v-card-title>
-      <v-card-text>
-        These are branding settings associated with your organization.
-      </v-card-text>
-
-      <v-card class="pa-6" outlined>
-        <v-row>
-          <v-col cols="6">
-            <!-- LOGO URL -->
-            <v-row>
-              <v-col cols="12">
-                <v-text-field v-model="org.branding.logo_url" 
-                              :label="labels.logo_url" 
-                              :hint="hints.logo_url"
-                              prepend-icon="mdi-link-variant"
-                              :disabled="readOnly"
-                ></v-text-field>
-                <!-- <v-card-text class="grey--text">{{ hints.logo_url }}</v-card-text> -->
-              </v-col>
-            </v-row>
-
-            <!-- COLORS -->
-            <v-row>
-              <v-col cols="6">
-                <!-- PRIMARY COLOR -->
-                <label>{{ labels.primary }}</label>
-                <!-- <v-card-text class="grey--text">{{ hints.primary }}</v-card-text> -->
-                <v-color-picker v-model="org.branding.colors.primary"
-                                mode="hexa"
-                                elevation="8"
-                ></v-color-picker>
-              </v-col>
-              
-              <v-col cols="6">
-                <!-- BACKGROUND COLOR -->
-                <label>{{ labels.background }}</label>
-                <!-- <v-card-text class="grey--text">{{ hints.background }}</v-card-text> -->
-                <v-color-picker v-model="org.branding.colors.page_background"
-                                mode="hexa"
-                                elevation="8"
-                ></v-color-picker>
-                
-              </v-col>
-            </v-row>
-          </v-col>
-
-          <v-col cols="6">
-            <org-sample-ui :logoURL="org.branding.logo_url"
-                          :primary="org.branding.colors.primary"
-                          :background="org.branding.colors.page_background" 
-            >
-            </org-sample-ui>
-          </v-col>
-        </v-row>
-      </v-card>
-      <v-divider></v-divider>
-
-      <v-card-title>Metadata</v-card-title>
-      <v-card-text>
-        Metadata related to this organization.
-      </v-card-text>
-
-      <v-card class="pa-6" outlined>
-        <v-row>
-          <v-col cols="5">
-            <v-text-field v-model="metadata.key"
-                          label="key ..." 
-                          :disabled="false"
-                          prepend-icon="mdi-key-outline"
-            ></v-text-field>
-          </v-col>
-
-          <v-col cols="5">
-            <v-text-field v-model="metadata.value"
-                          label="value ..."
-                          :disabled="false"
-                          prepend-icon="mdi-tag-outline"
-            ></v-text-field>
-          </v-col>
-
-          <v-col cols="2">
-            <v-btn @click="addMetadata">
-              <v-icon left>mdi-plus</v-icon>
-              Add
-            </v-btn>
-          </v-col>
-        </v-row>
-
-        <v-data-table :headers="metadata.headers"
-                      :items="metadata.items"
-                      hide-default-footer
-        >
-          <template v-slot:[`item.index`]="{ item }">
-            <v-btn icon color="red" @click="removeMetadata(item.key)">
-                <v-icon>mdi-trash-can-outline</v-icon>
-              </v-btn>
-          </template>
-        </v-data-table>
-      </v-card>
-
-      <v-divider></v-divider>
-
-      <v-card-actions> 
-        <v-btn color="primary" @click="saveChanges">
-          Save Changes
-        </v-btn>
-      </v-card-actions>
-
+        <v-col cols="6">
+          <v-text-field v-model="org.display_name"
+                        :label="labels.display_name"
+                        :hint="hints.display_name"
+                        :disabled="readOnly"
+          ></v-text-field>
+          <v-card-text class="grey--text">{{ hints.display_name }}</v-card-text>
+        </v-col>
+      </v-row>
     </v-card>
-  </div>
+
+    <v-divider></v-divider>
+    
+    <v-card-title>Branding</v-card-title>
+    <v-card-text>
+      These are branding settings associated with your organization.
+    </v-card-text>
+
+    <v-card class="pa-6" outlined>
+      <v-row>
+        <v-col cols="6">
+          <!-- LOGO URL -->
+          <v-row>
+            <v-col cols="12">
+              <v-text-field v-model="org.branding.logo_url" 
+                            :label="labels.logo_url" 
+                            :hint="hints.logo_url"
+                            prepend-icon="mdi-link-variant"
+                            :disabled="readOnly"
+              ></v-text-field>
+              <!-- <v-card-text class="grey--text">{{ hints.logo_url }}</v-card-text> -->
+            </v-col>
+          </v-row>
+
+          <!-- COLORS -->
+          <v-row>
+            <v-col cols="6">
+              <!-- PRIMARY COLOR -->
+              <label>{{ labels.primary }}</label>
+              <!-- <v-card-text class="grey--text">{{ hints.primary }}</v-card-text> -->
+              <v-color-picker v-model="org.branding.colors.primary"
+                              mode="hexa"
+                              elevation="8"
+              ></v-color-picker>
+            </v-col>
+            
+            <v-col cols="6">
+              <!-- BACKGROUND COLOR -->
+              <label>{{ labels.background }}</label>
+              <!-- <v-card-text class="grey--text">{{ hints.background }}</v-card-text> -->
+              <v-color-picker v-model="org.branding.colors.page_background"
+                              mode="hexa"
+                              elevation="8"
+              ></v-color-picker>
+              
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <v-col cols="6">
+          <org-sample-ui :logoURL="org.branding.logo_url"
+                        :primary="org.branding.colors.primary"
+                        :background="org.branding.colors.page_background" 
+          >
+          </org-sample-ui>
+        </v-col>
+      </v-row>
+    </v-card>
+    <v-divider></v-divider>
+
+    <v-card-title>Metadata</v-card-title>
+    <v-card-text>
+      Metadata related to this organization.
+    </v-card-text>
+
+    <v-card class="pa-6" outlined>
+      <v-row>
+        <v-col cols="5">
+          <v-text-field v-model="metadata.key"
+                        label="key ..." 
+                        :disabled="false"
+                        prepend-icon="mdi-key-outline"
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="5">
+          <v-text-field v-model="metadata.value"
+                        label="value ..."
+                        :disabled="false"
+                        prepend-icon="mdi-tag-outline"
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="2">
+          <v-btn @click="addMetadata">
+            <v-icon left>mdi-plus</v-icon>
+            Add
+          </v-btn>
+        </v-col>
+      </v-row>
+
+      <v-data-table :headers="metadata.headers"
+                    :items="metadata.items"
+                    hide-default-footer
+      >
+        <template v-slot:[`item.index`]="{ item }">
+          <v-btn icon color="red" @click="removeMetadata(item.key)">
+              <v-icon>mdi-trash-can-outline</v-icon>
+            </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+
+    <v-divider></v-divider>
+
+    <v-card-actions> 
+      <v-btn color="primary" @click="saveChanges">
+        Save Changes
+      </v-btn>
+    </v-card-actions>
+
+  </v-card>
 </template>
 
 <script>
-import EventBus from '../helpers/eventBus.js'
-import OrgSampleUi from '../components/OrgSampleUI.vue'
+import EventBus from '../../helpers/eventBus.js'
+import OrgSampleUi from './OrgSampleUI.vue'
 
 export default {
   name: 'Organization',

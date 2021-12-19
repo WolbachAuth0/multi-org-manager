@@ -31,11 +31,11 @@
       </v-tab-item>
 
       <v-tab-item key="invitations">
-        Invitations
+        <org-invitations></org-invitations>
       </v-tab-item>
 
       <v-tab-item key="connections">
-        connections
+        <org-connections></org-connections>
       </v-tab-item>
     </v-tabs-items>
 
@@ -43,13 +43,17 @@
 </template>
 
 <script>
-import OrgOverview from '../components/OrgOverview.vue'
-import OrgMembers from '../components/OrgMembers.vue'
+import OrgOverview from '../components/Organization/OrgOverview.vue'
+import OrgMembers from '../components/Organization/OrgMembers.vue'
+import OrgInvitations from '../components/Organization/OrgInvitations.vue'
+import OrgConnections from '../components/Organization/OrgConnections.vue'
 
 export default {
   components: {
     OrgOverview,
-    OrgMembers
+    OrgMembers,
+    OrgInvitations,
+    OrgConnections
   },
   name: 'Dashboard',
   data () {

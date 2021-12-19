@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="pa-6" color="blue lighten-5">
     <v-card-title>
       Organization Manager
     </v-card-title>

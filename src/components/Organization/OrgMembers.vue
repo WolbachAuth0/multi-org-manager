@@ -1,32 +1,36 @@
 <template>
-  <v-card>
+  <v-card class="pa-6" color="blue lighten-5">
     <v-card-title>
       Members
     </v-card-title>
+    <v-card-text>
+      A list of all the current members of this organization.
+    </v-card-text>
     
-    <v-card-title>
-      <v-text-field v-model="table.search" append-icon="mdi-magnify" label="Search Organization Members ..." single-line hide-details></v-text-field>
-    </v-card-title>
+    <v-card class="pa-6" outlined>
+      <v-card-title>
+        <v-text-field v-model="table.search" append-icon="mdi-magnify" label="Search Organization Members ..." single-line hide-details></v-text-field>
+      </v-card-title>
 
-    <v-data-table :headers="table.headers" :items="members" :search="table.search">
-      <template v-slot:[`item.picture`]="{ item }">
-        <v-tooltip>
-          <template v-slot:activator="{ }">
-            <v-avatar>
-              <img :src="item.picture" :alt="item.user_id">
-            </v-avatar>
-          </template>
-          <span>user_id: {{ item.user_id }}</span>
-        </v-tooltip>
-      </template>
-    </v-data-table>
-
+      <v-data-table :headers="table.headers" :items="members" :search="table.search">
+        <template v-slot:[`item.picture`]="{ item }">
+          <v-tooltip>
+            <template v-slot:activator="{ }">
+              <v-avatar>
+                <img :src="item.picture" :alt="item.user_id">
+              </v-avatar>
+            </template>
+            <span>user_id: {{ item.user_id }}</span>
+          </v-tooltip>
+        </template>
+      </v-data-table>
+    </v-card>
   </v-card>
 </template>
 
 <script>
 import { mdiAccountCircle } from '@mdi/js'
-import EventBus from '../helpers/eventBus.js'
+import EventBus from '../../helpers/eventBus.js'
 
 export default {
   name: 'OrgMembers',

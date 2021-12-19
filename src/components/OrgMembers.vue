@@ -60,12 +60,24 @@ export default {
     }
   },
   methods: {
+    /**
+     * Gets called when the component is mounted.
+     * Fetches an array of users which are members of the organization.
+     *
+     * @async
+     * @returns {Object[]} An array of users.  
+     */
     async fetchOrgMembers () {
       const orgID = this.$auth.user.org_id
       const accesstoken = await this.$auth.getTokenSilently()
       const response = await this.$http(accesstoken).get(`/organizations/${orgID}/members`)
       return response.data
-    }
+    },
+    // TODO: Implement the  stuff below
+    async getMemberRoles (memberID) {},
+    async addRolesToMember (memberID, roleID) {},
+    async removeRolesFromMember (memberID, roleID) {},
+    async removeMember (memberID) {},
   }
 }
 </script>

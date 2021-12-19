@@ -105,7 +105,6 @@ async function  getMembers (req, res) {
 }
 
 async function  update (req, res) {
-  console.log('received patch request.', req.body)
   const id = req.params.org_id
   const body = req.body
   let status = 200

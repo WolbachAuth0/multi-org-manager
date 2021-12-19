@@ -73,11 +73,15 @@ export default {
 			this.alert.visible = true 
 		},
 		show (payload) {
-			console.log('show: payload = ', payload)
+			if (process.env.VUE_APP_MODE === 'development') {
+				console.log('show announcer event: payload = ', payload)
+			}
 			this.alert.visible = true
 		},
 		hide (payload) {
-			console.log('hide: payload = ', payload)
+			if (process.env.VUE_APP_MODE === 'development') {
+				console.log('hide announcer event: payload = ', payload)
+			}
 			this.alert.visible = false
 		}
 	}

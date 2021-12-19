@@ -43,13 +43,11 @@ export default {
     }
   },
   async mounted () {
-    if (process.env.VUE_APP_MODE === 'development') {
-      console.log('mounted: Home')
-    }
     const orgs = await this.getOrganizations()
     this.organizations = orgs.data
 
-    if (!orgs.success) {
+    if (process.env.VUE_APP_MODE === 'development') {
+      console.log('mounted: Home')
       console.log(orgs)
     }
   },

@@ -60,7 +60,6 @@ export default {
       const hex = this.background
       const l = this.computeLightness(hex)
       const classname = l <= 50 ? 'text-center white--text' : 'text-center black--text'
-      console.log(`hex: ${hex}, L: ${l}%, class="${classname}"`)
       return classname
     }
   },

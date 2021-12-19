@@ -17,14 +17,13 @@
 <script>
 
 export default {
-  name: 'OrgInvitations',
+  name: 'OrgConnections',
   data () {
     return {}
   },
   async mounted () {   
     if (process.env.VUE_APP_MODE === 'development') {
-      console.log(`mounted: OrgInvitations`)
-      console.log(response.data)
+      console.log(`mounted: OrgConnections`)
     }
   },
   methods: {

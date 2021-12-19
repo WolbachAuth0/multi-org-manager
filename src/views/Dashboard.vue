@@ -65,11 +65,12 @@ export default {
     }
   },
   async mounted () {
-    if (process.env.VUE_APP_MODE === 'development') {
-      console.log('mounted: Dashboard')
-    }
     const response = await this.fetchOrg()
     this.org = response.data
+    if (process.env.VUE_APP_MODE === 'development') {
+      console.log('mounted: Dashboard')
+      console.log(response.data)
+    }
   },
   computed: {
     logoIsAvailable () {

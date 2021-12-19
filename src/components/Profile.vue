@@ -38,7 +38,9 @@ export default {
     }
   },
   mounted () {
-    console.log(this.user)
+    if (process.env.VUE_APP_MODE === 'development') {
+      console.log(this.user)
+    }
   }
 }
 </script>

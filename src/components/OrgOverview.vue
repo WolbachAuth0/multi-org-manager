@@ -7,6 +7,7 @@
           <v-card-text>
             These are basic details needed to set up your organization.
           </v-card-text>
+        
         </v-col>
 
         <v-col cols="6">
@@ -34,75 +35,51 @@
           <v-card-text>
             These are branding settings associated with your organization.
           </v-card-text>
-          
-          <v-text-field v-model="org.branding.logo_url" 
-                        :label="labels.logo_url" 
-                        :hint="hints.logo_url"
-                        prepend-icon="mdi-link-variant"
-                        :disabled="readOnly"
-          ></v-text-field>
-          <v-card-text class="grey--text">{{ hints.logo_url }}</v-card-text>
 
-          <v-text-field v-model="org.branding.colors.primary" 
-                        :label="labels.primary" 
-                        :hint="hints.primary"
-                        prepend-icon="mdi-palette" 
-                        :disabled="readOnly"
-          ></v-text-field>
-          <v-card-text class="grey--text">{{ hints.primary }}</v-card-text>
+          <!-- LOGO URL -->
+          <v-row>
+            <v-col cols="12">
+              <v-text-field v-model="org.branding.logo_url" 
+                            :label="labels.logo_url" 
+                            :hint="hints.logo_url"
+                            prepend-icon="mdi-link-variant"
+                            :disabled="readOnly"
+              ></v-text-field>
+              <v-card-text class="grey--text">{{ hints.logo_url }}</v-card-text>
+            </v-col>
+          </v-row>
 
-          <v-text-field v-model="org.branding.colors.page_background" 
-                        :label="labels.background" 
-                        :hint="hints.background"
-                        prepend-icon="mdi-palette"
-                        :disabled="readOnly"
-          ></v-text-field>
-          <v-card-text class="grey--text">{{ hints.background }}</v-card-text>
-
+          <!-- COLORS -->
+          <v-row>
+            <v-col cols="6">
+              <!-- PRIMARY COLOR -->
+              <label>{{ labels.primary }}</label>
+              <v-card-text class="grey--text">{{ hints.primary }}</v-card-text>
+              <v-color-picker v-model="org.branding.colors.primary"
+                              mode="hexa"
+                              elevation="8"
+              ></v-color-picker>
+            </v-col>
+            
+            <v-col cols="6">
+              <!-- BACKGROUND COLOR -->
+              <label>{{ labels.background }}</label>
+              <v-card-text class="grey--text">{{ hints.background }}</v-card-text>
+              <v-color-picker v-model="org.branding.colors.page_background"
+                              mode="hexa"
+                              elevation="8"
+              ></v-color-picker>
+              
+            </v-col>
+          </v-row>
         </v-col>
 
         <v-col cols="6">
-          <v-card :color="org.branding.colors.page_background" class="pa-6 ma-3">
-
-            <v-card outlined raised class="pa-6 mx-6">
-              <div class="d-flex justify-center my-2">
-                <v-avatar tile v-if="logoIsAvailable">
-                  <v-img :src="org.branding.logo_url" max-height="40" max-width="40" ></v-img>
-                </v-avatar>
-                <v-avatar tile v-else>
-                  <v-progress-circular :size="40" color="primary" indeterminate></v-progress-circular>
-                </v-avatar>
-              </div>
-
-              <v-card-text class="text-center blue-grey lighten-4 my-2">
-              </v-card-text>
-
-              <v-card-subtitle class="justify-center blue-grey lighten-4 my-2">
-              </v-card-subtitle>
-
-              <v-card-subtitle class="justify-center blue-grey lighten-4 my-2">
-              </v-card-subtitle>
-
-              <v-card-subtitle class="justify-center blue-grey lighten-4 my-2">
-              </v-card-subtitle>
-
-              <v-card-text class="text-center blue-grey lighten-4 my-2">
-              </v-card-text>
-
-              <v-card-actions class="justify-center">
-                <v-btn :color="org.branding.colors.primary">
-                  <span class="purple lighten-5"></span>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-
-            <v-card-text :class="fontClass">
-              Mock UI Preview<br/>
-              For organization branding representation only,<br/>
-              any other customization will not visible.
-            </v-card-text>
-          </v-card>
-          
+          <org-sample-ui :logoURL="org.branding.logo_url"
+                         :primary="org.branding.colors.primary"
+                         :background="org.branding.colors.page_background" 
+          >
+          </org-sample-ui>
         </v-col>
       </v-row>
 
@@ -154,7 +131,7 @@
       <v-row>
         <v-col cols="12">
           <v-card-actions> 
-            <v-btn color="primary" @click="updateOrg">
+            <v-btn color="primary" @click="saveChanges">
               Save Changes
             </v-btn>
           </v-card-actions>
@@ -167,9 +144,13 @@
 
 <script>
 import EventBus from '../helpers/eventBus.js'
+import OrgSampleUi from '../components/OrgSampleUI.vue'
 
 export default {
   name: 'Organization',
+  components: {
+    OrgSampleUi
+  },
   data () {
     return {
       labels: {
@@ -211,19 +192,9 @@ export default {
     }    
   },
   computed: {
-    logoIsAvailable () {
-      return this.org && this.org.branding && this.org.branding.logo_url
-    },
     readOnly () {
       // TODO: see if the access token has the update:organization permission.
-      return true
-    },
-    fontClass () {
-      const hex = this.org.branding.colors.page_background
-      const l = this.computeLightness(hex)
-      const classname = l <= 50 ? 'text-center white--text' : 'text-center black--text'
-      console.log(`hex: ${hex}, L: ${l}%, class="${classname}"`)
-      return classname
+      return false
     },
     metadataLimit () {
       const count = Object.keys(this.metadata.items).length
@@ -235,7 +206,10 @@ export default {
         metadata[item.key] = item.value
       }
       return metadata
-    }
+    },
+    orgID () {
+      return this.$auth.user.org_id
+    },
   },
   async mounted () {
     const response = await this.fetchOrg()
@@ -271,18 +245,28 @@ export default {
       const response = await this.$http(accesstoken).get(`/organizations/${orgID}`)
       return response.data
     },
-    async updateOrg () {
-      const orgId = this.$auth.user.org_id
-      // const accesstoken = await this.$auth.getTokenSilently()
-      // const response = await this.$http(accesstoken).put(`/organizations/${orgID}`, this.org)
-      // return response.data
+    async saveChanges () {
+      const accesstoken = await this.$auth.getTokenSilently()
+      const body = {
+        name: this.org.name,
+        display_name: this.org.display_name,
+        branding: {
+          logo_url: this.org.branding.logo_url,
+          colors: {
+            primary: this.org.branding.colors.primary,
+            page_background: this.org.branding.colors.page_background
+          }
+        },
+        metadata: this.metadataObject
+      }
+      const response = await this.$http(accesstoken).patch(`/organizations/${this.orgID}`, body)
       const announcement = {
-        text: 'TODO: Should update Organization.',
-        type: 'success'
+        text: response.data.message,
+        type: response.data.success ? 'success' : 'error'
       }
       EventBus.$emit('announce', announcement)
 
-      console.log(this.org)
+      return response.data
     },
     addMetadata () {
       // is this key already in the metadata?
@@ -306,19 +290,6 @@ export default {
       if (index > -1) {
         this.metadata.items.splice(index, 1);
       }
-    },
-    computeLightness (hex) {
-      // parse the RGB value from the hex color
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-      let r = parseInt(result[1], 16)/255
-      let g = parseInt(result[2], 16)/255
-      let b = parseInt(result[3], 16)/255
-
-      // next compute the HSL "lightness" value 
-      const max = Math.max(r, g, b)
-      const min = Math.min(r, g, b)
-      const l = Math.round((max + min) * 50)
-      return l
     }
   }
 }

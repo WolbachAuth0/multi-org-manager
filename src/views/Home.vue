@@ -36,6 +36,9 @@
 <script>
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'Welcome',
+  },
   data () {
     return {
       selectedOrg: 0,

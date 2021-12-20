@@ -42,10 +42,8 @@ export default {
 		Navigation,
 		YoutubeBackground
 	},
-	// TODO: need to install the vue-meta package to get this to work.
 	metaInfo: {
-		title: 'Home',
-		titleTemplate: 'Aaron Wolbach | %s'
+		titleTemplate: 'Organization Manager | %s'
 	},
 	data() {
 		return {

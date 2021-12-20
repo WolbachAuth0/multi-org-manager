@@ -56,6 +56,9 @@ export default {
     OrgConnections
   },
   name: 'Dashboard',
+  metaInfo: {
+    title: 'Dashboard',
+  },
   data () {
     return {
       tab: null,

@@ -67,6 +67,9 @@
 <script>
 export default {
   name: 'Debug',
+  metaInfo: {
+    title: 'Debug',
+  },
   data () {
     return {
       title: 'Debug',

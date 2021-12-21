@@ -1,6 +1,12 @@
 const path = require('path')
 
-
+/**
+ * Create an instance of the Auth0 Management API client
+ * with the provided scopes.
+ * 
+ * @param {String[]} scopes 
+ * @returns {Object} Instance of Management API Client
+ */
 module.exports = function (scopes) {
   try {
     const options = {

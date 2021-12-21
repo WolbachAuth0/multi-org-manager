@@ -1,9 +1,12 @@
 const responseFormatter = require('./../middleware/responseFormatter')
 const scopes = [
   'read:organizations',
+  'update:organizations',
   'read:organization_members',
+  'update:organization_members',
+  'create:organization_connections',
   'read:organization_connections',
-  'update:organizations'
+  'update:organization_connections'
 ]
 const management = require('./../models/management')(scopes)
 
@@ -12,7 +15,18 @@ module.exports = {
   getByID,
   getMembers,
   update,
+  getEnabledConnections,
+  getEnabledConnection,
+  createEnabledConnection,
+  updateEnabledConnection,
   schema: {
+    createConnection: {
+      type: 'object',
+      required: [ 'connection_id' ],
+      properties: {
+        assign_membership_on_login: { type: 'boolean' }
+      }
+    },
     update: {
       type: 'object',
       description: '',
@@ -41,6 +55,7 @@ module.exports = {
   }
 }
 
+// organization
 /**
  * Get alist of all Organizations defined on the tenant.
  * 
@@ -86,7 +101,7 @@ async function getByID (req, res) {
   res.status(status).json(json)
 }
 
-async function  getMembers (req, res) {
+async function getMembers (req, res) {
   const id = req.params.org_id
   let status = 200
   let message = ``
@@ -104,7 +119,7 @@ async function  getMembers (req, res) {
   res.status(status).json(json)
 }
 
-async function  update (req, res) {
+async function update (req, res) {
   const id = req.params.org_id
   const body = req.body
   let status = 200
@@ -113,6 +128,84 @@ async function  update (req, res) {
   try {
     data = await management.organizations.update({ id }, body)
     message = `Updated organization`
+  } catch (error) {
+    status = parseInt(error.statusCode) || 500
+    message = error.message
+    data = error
+  }
+  
+  const json = responseFormatter(req, res, { status, message, data })
+  res.status(status).json(json)
+}
+
+// connections
+async function getEnabledConnections (req, res) {
+  const id = req.params.org_id
+  let status = 200
+  let message = ``
+  let data = []
+  try {
+    data = await management.organizations.getEnabledConnections({ id })
+    message = `Found enabled connections for organization.`
+  } catch (error) {
+    status = parseInt(error.statusCode) || 500
+    message = error.message
+    data = error
+  }
+  
+  const json = responseFormatter(req, res, { status, message, data })
+  res.status(status).json(json)
+}
+
+async function getEnabledConnection (req, res) {
+  const id = req.params.org_id
+  const connection_id = req.params.connection_id
+  let status = 200
+  let message = ``
+  let data = []
+  try {
+    data = await management.organizations.getEnabledConnection({ id })
+    message = `Found enabled connections for organization.`
+  } catch (error) {
+    status = parseInt(error.statusCode) || 500
+    message = error.message
+    data = error
+  }
+  
+  const json = responseFormatter(req, res, { status, message, data })
+  res.status(status).json(json)
+}
+
+async function createEnabledConnection (req, res) {
+  const id = req.params.org_id
+  const connection_id = req.params.connection_id
+  const body = Object.assign({ connection_id }, req.body)
+  let status = 200
+  let message = ``
+  let data = []
+  try {
+    data = await management.organizations.addEnabledConnection({ id }, body)
+    message = `Added connection to organization`
+  } catch (error) {
+    status = parseInt(error.statusCode) || 500
+    message = error.message
+    data = error
+  }
+  
+  const json = responseFormatter(req, res, { status, message, data })
+  res.status(status).json(json)
+}
+
+async function updateEnabledConnection (req, res) {
+  const id = req.params.org_id
+  const connection_id = req.params.connection_id
+  const body = req.body
+  let status = 200
+  let message = ``
+  let data = []
+  try {
+    data = await management.organizations.updateEnabledConnection({ id, connection_id }, body)
+    message = `Updated enabled connection for organization`
   } catch (error) {
     status = parseInt(error.statusCode) || 500
     message = error.message

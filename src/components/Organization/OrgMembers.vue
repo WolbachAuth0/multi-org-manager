@@ -49,7 +49,7 @@ export default {
     }
   },
   async mounted () {
-    const response = await this.fetchOrgMembers()
+    const response = await this.fetchMembers()
     this.members = response.data
     const announcement = {
       text: response.message,
@@ -73,10 +73,10 @@ export default {
      * @async
      * @returns {Object[]} An array of users.  
      */
-    async fetchOrgMembers () {
-      const orgID = this.$auth.user.org_id
+    async fetchMembers () {
+      const url = `/organizations/${this.$auth.user.org_id}/members`
       const accesstoken = await this.$auth.getTokenSilently()
-      const response = await this.$http(accesstoken).get(`/organizations/${orgID}/members`)
+      const response = await this.$http(accesstoken).get(url)
       return response.data
     },
     // TODO: Implement the  stuff below

@@ -27,15 +27,32 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <v-card-actions>
+      <v-btn color="primary" @click="newConnection">
+        Enable New Connection
+      </v-btn>
+    </v-card-actions>
+
+    <connection :org="org"
+                :visible="dialog"
+                @show="show"
+		 					  @hide="hide"
+    ></connection>
   </v-card>
 </template>
 
 <script>
+import Connection from './../Connection.vue'
 import EventBus from './../../helpers/eventBus'
 export default {
   name: 'OrgConnections',
+  components: {
+    Connection
+  },
   data () {
     return {
+      dialog: false,
       connections: [],
       table: {
         headers: [
@@ -70,6 +87,10 @@ export default {
       const response = await this.$http(accesstoken).get(`/organizations/${orgID}/connections`)
       return response.data
     },
+    async newConnection () {
+      // show modal form with new connection detail
+      this.dialog = true
+    },
     icon (strategy) {
       let iconstring = ''
       switch (strategy) {
@@ -87,6 +108,12 @@ export default {
       }
       return iconstring
       // others
+    },
+    show () {
+      this.dialog = true
+    },
+    hide () {
+      this.dialog = false
     }
   }
 }

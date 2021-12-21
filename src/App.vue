@@ -61,6 +61,7 @@ export default {
 			console.log('auth0 domain: ', process.env.VUE_APP_AUTH0_DOMAIN)
 			console.log('vue app api host: ', process.env.VUE_APP_API_HOST)
 			console.log('vue app domain: ', process.env.VUE_APP_DOMAIN)
+			console.log('vue app audience: ', process.env.VUE_APP_AUTH0_AUDIENCE)
 		}
 		EventBus.$on('announce', this.makeAnnouncement)
 	},

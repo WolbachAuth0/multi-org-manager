@@ -2,7 +2,7 @@
 
   <v-card>
     <v-card-title>
-      <h2>Debug Viewer</h2>
+      Debug Viewer
     </v-card-title>
 
     <v-tabs v-model="tab">

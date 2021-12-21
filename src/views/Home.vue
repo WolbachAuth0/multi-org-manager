@@ -1,35 +1,72 @@
 <template>
-  <v-card class="pa-6" color="blue lighten-5">
+  <v-card>
     <v-card-title>
       Organization Manager
     </v-card-title>
-    <v-card-text>
-        The purpose of this application is to demonstrate how a single page application (SPA) can be used to provide
-        managers of an Auth0 organization the ability to manage their organization.
-      </v-card-text>
 
-    <v-card class="pa-6" outlined>
-      <v-card-title>
-        Organizations Found
-      </v-card-title>
-      <v-list v-if="organizations.length" flat>
-        <v-list-item-group v-model="selectedOrg" color="primary">
-          <v-list-item v-for="(item, i) in organizations" :key="i" @click="authenticate(item.id)">
-            
-            <v-list-item-icon>
-              <v-avatar tile>
-                <v-img :src="item.branding.logo_url" max-height="40" max-width="40" ></v-img>
-              </v-avatar>
-            </v-list-item-icon>
+    <v-tabs v-model="tab">
+      <v-tabs-slider color="blue"></v-tabs-slider>
+      <v-tab key="organizations">Organizations</v-tab>
+      <v-tab key="about">About</v-tab>
+    </v-tabs>
 
-            <v-list-item-content>
-              <v-list-item-title>({{ item.name }}) {{ item.display_name }}</v-list-item-title>
-            </v-list-item-content>
+    <v-tabs-items v-model="tab">
+      <v-tab-item key="organizations">
+        <v-card class="pa-6" color="blue lighten-5">
+          <v-card-title>
+            Organization Selector
+          </v-card-title>
 
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-card>
+          <v-card class="pa-6">
+            <v-row>
+              <v-col cols="6">
+                <v-card-text>
+                  All organizations defined on the Auth0 tenant are shown on the right. To get started, 
+                  choose an organization to login to. 
+                </v-card-text>
+              </v-col>
+
+              <v-col cols="6">
+                <v-list v-if="organizations.length" flat>
+                  <v-list-item-group v-model="selectedOrg" color="primary">
+                    <v-list-item v-for="(item, i) in organizations" :key="i" @click="authenticate(item.id)">
+                      
+                      <v-list-item-icon>
+                        <v-avatar tile>
+                          <v-img :src="item.branding.logo_url" max-height="40" max-width="40" ></v-img>
+                        </v-avatar>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title>({{ item.name }}) {{ item.display_name }}</v-list-item-title>
+                      </v-list-item-content>
+
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-col>
+            </v-row>
+
+          </v-card>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item key="about">
+        <v-card class="pa-6" color="blue lighten-5">
+          <v-card-title>
+            About
+          </v-card-title>
+
+        <v-card class="pa-6">
+          <v-card-text>
+            The purpose of this application is to demonstrate how a single page application (SPA) can be used to provide
+            managers of an Auth0 organization the ability to manage their organization.
+          </v-card-text>
+
+          </v-card>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
   </v-card>
 </template>
 
@@ -41,6 +78,7 @@ export default {
   },
   data () {
     return {
+      tab: null,
       selectedOrg: 0,
       organizations: []
     }

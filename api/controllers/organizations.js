@@ -3,7 +3,6 @@ const scopes = [
   'read:organizations',
   'update:organizations',
   'read:organization_members',
-  'update:organization_members',
   'create:organization_connections',
   'read:organization_connections',
   'update:organization_connections'

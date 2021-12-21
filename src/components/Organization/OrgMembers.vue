@@ -40,7 +40,6 @@ export default {
         search: '',
         headers: [
           { text: '', align: 'start', value: 'picture', filterable: false, sortable: false },
-          // { text: 'ID', filterable: false, value: 'user_id' },
           { text: 'Name', value: 'name', filterable: true, sortable: true },
           { text: 'Email', value: 'email', filterable: true, sortable: true }
         ] 
@@ -62,6 +61,9 @@ export default {
       console.log('mounted: OrgMembers')
       console.log(response.data)
     }
+  },
+  props: {
+    org: { type: Object }
   },
   methods: {
     /**

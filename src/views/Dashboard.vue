@@ -23,19 +23,19 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item key="overview">
-        <org-overview></org-overview>
+        <org-overview ></org-overview>
       </v-tab-item>
 
       <v-tab-item key="members">
-        <org-members></org-members>
+        <org-members :org="org"></org-members>
       </v-tab-item>
 
       <v-tab-item key="invitations">
-        <org-invitations></org-invitations>
+        <org-invitations :org="org"></org-invitations>
       </v-tab-item>
 
       <v-tab-item key="connections">
-        <org-connections></org-connections>
+        <org-connections :org="org"></org-connections>
       </v-tab-item>
     </v-tabs-items>
 
@@ -67,7 +67,7 @@ export default {
       orgAvailable: false,
     }
   },
-  async mounted () {
+  async created () {
     const response = await this.fetchOrg()
     this.org = response.data
     if (process.env.VUE_APP_MODE === 'development') {

@@ -25,6 +25,9 @@ export default {
       console.log(`mounted: OrgInvitations`)
     }
   },
+  props: {
+    org: { type: Object }
+  },
   methods: {
     
   }

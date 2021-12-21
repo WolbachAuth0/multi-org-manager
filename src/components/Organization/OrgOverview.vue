@@ -212,7 +212,7 @@ export default {
   async mounted () {
     const response = await this.fetchOrg()
     if (process.env.VUE_APP_MODE === 'development') {
-      console.log('mounted: Organization', response)
+      console.log('mounted: Organization', response.data)
     }
 
     const org = response.data

@@ -34,7 +34,7 @@
       These are branding settings associated with your organization.
     </v-card-text>
 
-    <v-card class="pa-6" outlined>
+    <v-card class="pa-6">
       <v-row>
         <v-col cols="6">
           <!-- LOGO URL -->
@@ -91,7 +91,7 @@
       Metadata related to this organization.
     </v-card-text>
 
-    <v-card class="pa-6" outlined>
+    <v-card class="pa-6">
       <v-row>
         <v-col cols="5">
           <v-text-field v-model="metadata.key"

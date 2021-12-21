@@ -7,7 +7,7 @@
       A list of invitations to users to join this organization.
     </v-card-text>
     
-    <v-card class="pa-6" outlined>
+    <v-card class="pa-6">
       
     </v-card>
   </v-card>

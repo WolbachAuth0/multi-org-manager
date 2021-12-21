@@ -7,7 +7,7 @@
       A list of all the current members of this organization.
     </v-card-text>
     
-    <v-card class="pa-6" outlined>
+    <v-card class="pa-6">
       <v-card-title>
         <v-text-field v-model="table.search" append-icon="mdi-magnify" label="Search Organization Members ..." single-line hide-details></v-text-field>
       </v-card-title>

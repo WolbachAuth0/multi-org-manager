@@ -5,6 +5,11 @@ const organizations = require('./../controllers/organizations')
 
 module.exports = router
 
+const options = {
+  customScopeKey: 'permissions',
+  failWithError: true
+}
+
 // Organizations
 router
   .route('/')
@@ -13,11 +18,11 @@ router
 router.route('/:org_id')
   .all(verifyJWT)
   .get(
-    // checkJWTScopes(['read:organizations'], options),
+    checkJWTScopes(['read:organizations'], options),
     organizations.getByID
   )
   .patch(
-    // checkJWTScopes(['update:organizations'], options),
+    checkJWTScopes(['update:organizations'], options),
     schemaValidator(organizations.schema.organization),
     organizations.update
   )
@@ -26,7 +31,7 @@ router.route('/:org_id')
 router.route('/:org_id/members')
   .all(verifyJWT)
   .get(
-    // checkJWTScopes(['read:organization_members'], options),
+    checkJWTScopes(['read:members'], options),
     organizations.getMembers
   )
 
@@ -34,18 +39,18 @@ router.route('/:org_id/members')
 router.route('/:org_id/connections')
   .all(verifyJWT)
   .get(
-    // checkJWTScopes(['read:organization_connections'], options),
+    checkJWTScopes(['read:connections'], options),
     organizations.listEnabledConnections
   )
 
 router.route('/:org_id/connections/:connection_id')
   .all(verifyJWT)
   .get(
-    // checkJWTScopes(['update:organization_connections'], options),
+    checkJWTScopes(['update:connections'], options),
     organizations.getEnabledConnection
   )
   .patch(
-    // checkJWTScopes(['update:organization_connections'], options),
+    checkJWTScopes(['update:connections'], options),
     schemaValidator(organizations.schema.connection),
     organizations.updateEnabledConnection
   )
@@ -58,11 +63,11 @@ router.route('/:org_id/connections/:connection_id')
 router.route('/:org_id/invitations')
   .all(verifyJWT)
   .get(
-    // checkJWTScopes(['read:organization_invitations'], options),
+    checkJWTScopes(['read:invitations'], options),
     organizations.listInvitations
   )
   .post(
-    // checkJWTScopes(['create:organization_invitations'], options),
+    checkJWTScopes(['create:invitations'], options),
     schemaValidator(organizations.schema.invitation),
     organizations.createInvitation
   )
@@ -70,11 +75,10 @@ router.route('/:org_id/invitations')
 router.route('/:org_id/invitations/:invitation_id')
   .all(verifyJWT)
   .get(
-    // checkJWTScopes(['read:organization_invitations'], options),
+    checkJWTScopes(['read:invitations'], options),
     organizations.getInvitation
   )
-
   .delete(
-    // checkJWTScopes(['delete:organization_invitations'], options),
+    checkJWTScopes(['delete:invitations'], options),
     organizations.deleteInvitation
   )

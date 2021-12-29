@@ -5,6 +5,10 @@ const scopes = [
 
   'read:organization_members',
   
+  'create:organization_member_roles',
+  'read:organization_member_roles',
+  'delete:organization_member_roles',
+
   'create:organization_connections',
   'read:organization_connections',
   'update:organization_connections',

@@ -101,7 +101,6 @@ export default {
 		routes() {
 			let routes = [
 				{ title: 'Home', icon: mdiHomeCircle , to: '/', auth: false },
-				// { title: 'Profile', icon: mdiAccountCircle , to: '/profile', auth: true },
 				{ title: 'Dashboard', icon: mdiMonitorDashboard , to: '/dashboard', auth: true },
 				{ title: 'Debug', icon: mdiCogOutline , to: '/debug', auth: true }
 			]
@@ -126,7 +125,7 @@ export default {
         this.$router.push({ path: '/' })
 			} else {
 				// https://auth0.github.io/auth0-spa-js/interfaces/redirectloginoptions.html
-				const scopes = [ 'openid', 'profile', 'email'	]
+				const scopes = [ 'openid', 'profile', 'email' ]
 				this.$auth.loginWithRedirect({ scope: scopes.join(' ') })
 			}
 		}

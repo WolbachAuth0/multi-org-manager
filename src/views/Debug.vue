@@ -109,10 +109,10 @@ export default {
   },
   computed: {
     userJSON () {
-      return JSON.stringify(this.user)
+      return JSON.stringify(this.user).trim()
     },
     tokenJSON () {
-      return JSON.stringify(this.accessTokenDecoded)
+      return JSON.stringify(this.accessTokenDecoded).trim()
     }
   },
   filters: {
@@ -129,7 +129,7 @@ export default {
       signature: claims.__raw.split('.')[2]
     }
     // decode the id token
-    this.user = this.$auth.user
+    this.user = this.$auth.decodeToken(claims.__raw)
 
     // get the raw access token
     const accesstoken  = await this.$auth.getTokenSilently()
@@ -139,13 +139,7 @@ export default {
       signature: accesstoken ? accesstoken.split('.')[2] : ''
     }
     // decode the access token
-    this.accessTokenDecoded = accesstoken ? parseJwt(accesstoken) : {}
-    
-    function parseJwt(token) {
-      const base64Payload = token.split('.')[1]
-      const payload = Buffer.from(base64Payload, 'base64')
-      return JSON.parse(payload.toString())
-    }
+    this.accessTokenDecoded = accesstoken ? this.$auth.decodeToken(accesstoken) : {}
   }
 }
 </script>

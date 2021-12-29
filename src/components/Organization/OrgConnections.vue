@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import Connection from './../Connection.vue'
+import Connection from './Connection.vue'
 import EventBus from './../../helpers/eventBus'
 export default {
   name: 'OrgConnections',

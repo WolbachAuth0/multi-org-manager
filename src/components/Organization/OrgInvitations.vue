@@ -48,16 +48,27 @@
         Invite Members
       </v-btn>
     </v-card-actions>
+
+    <invitation :org="org"
+                :visible="dialog"
+                @show="show"
+		 					  @hide="hide"
+    ></invitation>
   </v-card>
 </template>
 
 <script>
+import Invitation from './Invitation.vue'
 import EventBus from '../../helpers/eventBus.js'
 import moment from 'moment'
 export default {
   name: 'OrgInvitations',
+  components: {
+    Invitation
+  },
   data () {
     return {
+      dialog: false,
       invitations: [],
       table: {
         search: '',
@@ -104,7 +115,16 @@ export default {
     isExpired (datestring) {
       return moment().isAfter(datestring)
     },
-    inviteMembers () {}
+    inviteMembers () {
+      // show modal form with invitation detail
+      this.dialog = true
+    },
+    show () {
+      this.dialog = true
+    },
+    hide () {
+      this.dialog = false
+    }
   }
 }
 </script>

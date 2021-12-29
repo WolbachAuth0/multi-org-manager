@@ -73,14 +73,34 @@ export const useAuth0 = ({
         }
         return this.auth0Client.loginWithRedirect(options)
       },
+      /**
+       * gives you the raw (undecoded) ID token
+       * @param {*} opts 
+       * @returns 
+       */
       getIdTokenClaims(opts) {
         return this.auth0Client.getIdTokenClaims(opts)
       },
+      /**
+       * gives you the raw (undecoded) Access Token
+       * @param {*} opts 
+       * @returns 
+       */
       getTokenSilently(opts) {
         return this.auth0Client.getTokenSilently(opts)
       },
       getTokenWithPopup(opts) {
         return this.auth0Client.getTokenWithPopup(opts)
+      },
+      /**
+       * Decodes a token and returns a javascript object
+       * @param {String} token A base64 encoded token (access or id) 
+       * @returns 
+       */
+      decodeToken(token) {
+        const base64Payload = token.split('.')[1]
+        const payload = Buffer.from(base64Payload, 'base64')
+        return JSON.parse(payload.toString())        
       },
       logout(opts) {
         const options = Object.assign(typeof opts == 'object' ? opts : {}, { returnTo: process.env.VUE_APP_AUTH0_LOGOUTURL })

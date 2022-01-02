@@ -89,6 +89,7 @@ npm run dev-api
 This application has two components - a Vue.js client application and an Express.js API server application.
  - [Vuetify.js](https://vuetifyjs.com/)
  - [Express.js](https://expressjs.com/)
+ - [ReadmeSO](https://readme.so/)
  - [Auth0 Vue.js SPA Quickstart](https://auth0.com/docs/quickstart/spa/vuejs)
  - [Auth0 Express Quickstart](https://auth0.com/docs/quickstart/backend/nodejs/01-authorization)
  - [Auth0 Management API Docs](https://auth0.com/docs/api/management/v2)

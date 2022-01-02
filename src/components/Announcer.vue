@@ -1,5 +1,14 @@
 <template>
-  <v-snackbar v-model="isShown" :timeout="timeout" top right :outlined="outlined" :color="color">
+  <v-snackbar v-model="isShown"
+              :timeout="timeout"
+              :top="top"
+              :right="right"
+              :bottom="bottom"
+              :left="left"
+              :centered="centered"
+              :outlined="outlined"
+              :color="color"
+  >
     <template v-slot:action="{ attrs }">
       <v-btn text v-bind="attrs" @click="isShown = false">
         Close
@@ -41,12 +50,21 @@ export default {
     },
     icon () {
       return (this.type === 'success') ? mdiCloudCheckOutline : mdiCloudAlert
+    },
+    bottom () {
+      return !this.top
+    },
+    centered () {
+      return !(this.right && this.left)
     }
   },
   props: {
     visible: { type: Boolean },
     text: { type: String, default: '' },
     timeout: { type: Number, default: 2000 },
+    top: { type: Boolean, default: true },
+    right: { type: Boolean, default: true },
+    left: { type: Boolean, default: false },
     type: {
       validator (value) {
         return [ 'success', 'error' ].indexOf(value) !== -1

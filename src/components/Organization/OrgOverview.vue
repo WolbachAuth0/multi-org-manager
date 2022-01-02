@@ -260,7 +260,10 @@ export default {
       const response = await this.$http(accesstoken).patch(`/organizations/${this.orgID}`, body)
       const announcement = {
         text: response.data.message,
-        type: response.data.success ? 'success' : 'error'
+        type: response.data.success ? 'success' : 'error',
+        top: true,
+        right: true,
+        left: false
       }
       EventBus.$emit('announce', announcement)
 

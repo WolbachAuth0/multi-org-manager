@@ -5,6 +5,9 @@
 		<announcer :visible="alert.visible"
 							 :text="alert.text"
 							 :type="alert.type"
+							 :top="alert.top"
+							 :right="alert.right"
+							 :left="alert.left"
 							 @show="show"
 							 @hide="hide"
 		></announcer>
@@ -51,6 +54,9 @@ export default {
         visible: false,
         text: '',
         type: 'success',
+				top: true,
+				right: true,
+				left: false
       }
 		}
 	},
@@ -66,21 +72,23 @@ export default {
 		EventBus.$on('announce', this.makeAnnouncement)
 	},
 	methods: {
-		makeAnnouncement ({ text='announcement text', type='success' }) {
+		makeAnnouncement ({ text='announcement text', type='success', top=true, right=true, left=false }) {
 			this.alert.text = text
 			this.alert.type = type
-			this.alert.visible = true 
+			this.alert.top = top
+			this.alert.right = right
+			this.alert.left = left
+
+			this.alert.visible = true
+
+			if (process.env.VUE_APP_MODE === 'development') {
+				console.log('announcer event: payload = ', this.alert)
+			}
 		},
 		show (payload) {
-			if (process.env.VUE_APP_MODE === 'development') {
-				console.log('show announcer event: payload = ', payload)
-			}
 			this.alert.visible = true
 		},
 		hide (payload) {
-			if (process.env.VUE_APP_MODE === 'development') {
-				console.log('hide announcer event: payload = ', payload)
-			}
 			this.alert.visible = false
 		}
 	}

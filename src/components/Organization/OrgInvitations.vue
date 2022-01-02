@@ -87,7 +87,10 @@ export default {
     this.invitations = response.data
     const announcement = {
       text: response.message,
-      type: response.success ? 'success' : 'error'
+      type: response.success ? 'success' : 'error',
+      top: true,
+      right: true,
+      left: false
     }
     EventBus.$emit('announce', announcement)
 

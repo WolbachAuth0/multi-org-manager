@@ -53,7 +53,10 @@ export default {
     this.members = response.data
     const announcement = {
       text: response.message,
-      type: response.success ? 'success' : 'error'
+      type: response.success ? 'success' : 'error',
+      top: true,
+      right: true,
+      left: false
     }
     EventBus.$emit('announce', announcement)
 

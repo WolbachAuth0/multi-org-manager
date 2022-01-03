@@ -23,28 +23,51 @@
             <span>user_id: {{ item.user_id }}</span>
           </v-tooltip>
         </template>
+
+        <template v-slot:[`item.user_id`]="{ item }">
+          <v-btn icon @click="editMember(item)">
+            <v-icon>mdi-pencil-circle-outline</v-icon>
+          </v-btn>
+          <!-- <v-btn icon @click="removeMember(item.user_id)">
+            <v-icon>mdi-delete-circle-outline</v-icon>
+          </v-btn> -->
+        </template>
       </v-data-table>
     </v-card>
+
+    <member :org="org"
+            :visible="dialog"
+            :user="selectedUser"
+            @show="show"
+		 				@hide="hide"
+    ></member>
   </v-card>
 </template>
 
 <script>
+import Member from './Member.vue'
 import { mdiAccountCircle } from '@mdi/js'
 import EventBus from '../../helpers/eventBus.js'
 
 export default {
   name: 'OrgMembers',
+  components: {
+    Member
+  },
   data () {
     return {
+      dialog: false,
       table: {
         search: '',
         headers: [
           { text: '', align: 'start', value: 'picture', filterable: false, sortable: false },
           { text: 'Name', value: 'name', filterable: true, sortable: true },
-          { text: 'Email', value: 'email', filterable: true, sortable: true }
+          { text: 'Email', value: 'email', filterable: true, sortable: true },
+          { text: '', value: 'user_id', filterable: false, sortable: false },
         ] 
       },
       members: [],
+      selectedUser: null,
       icons: { mdiAccountCircle },
     }
   },
@@ -82,11 +105,16 @@ export default {
       const response = await this.$http(accesstoken).get(url)
       return response.data
     },
-    // TODO: Implement the  stuff below
-    async getMemberRoles (memberID) {},
-    async addRolesToMember (memberID, roleID) {},
-    async removeRolesFromMember (memberID, roleID) {},
-    async removeMember (memberID) {},
+    editMember (member) {
+      this.selectedUser = member
+      this.show()
+    },
+    show () {
+      this.dialog = true
+    },
+    hide () {
+      this.dialog = false
+    }
   }
 }
 </script>

@@ -35,6 +35,14 @@ router.route('/:org_id/members')
     organizations.getMembers
   )
 
+// Organization Member Roles
+router.route('/:org_id/members/:user_id/roles')
+  .all(verifyJWT)
+  .get(
+    checkJWTScopes(['read:member_roles'], options),
+    organizations.readMemberRoles
+  )
+
 // Organization Connections
 router.route('/:org_id/connections')
   .all(verifyJWT)

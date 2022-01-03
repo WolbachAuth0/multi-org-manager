@@ -22,8 +22,9 @@ const management = require('./../models/management')(scopes)
 module.exports = {
   list,
   getByID,
-  update,
   getMembers,
+  update,
+  readMemberRoles,
   listEnabledConnections,
   getEnabledConnection,
   createEnabledConnection,
@@ -154,7 +155,7 @@ async function getMembers (req, res) {
     const payload = {
       status: 200,
       message: `Found ${data.length} members of organization.`,
-      data 
+      data
     }
     const json = responseFormatter(req, res, payload)
     res.status(payload.status).json(json)
@@ -172,6 +173,24 @@ async function update (req, res) {
       status: 200,
       message: `Updated organization ${data.name}`,
       data 
+    }
+    const json = responseFormatter(req, res, payload)
+    res.status(payload.status).json(json)
+  } catch (error) {
+    handleError(req, res, error)
+  }
+}
+
+// roles
+async function readMemberRoles (req, res) {
+  const id = req.params.org_id
+  const user_id = req.params.user_id
+  try {
+    const data = await management.organizations.getMemberRoles({ id, user_id })
+    const payload = {
+      status: 200,
+      message: `Found ${data.length} roles for member ${user_id}.`,
+      data
     }
     const json = responseFormatter(req, res, payload)
     res.status(payload.status).json(json)

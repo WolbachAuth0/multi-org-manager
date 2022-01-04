@@ -30,7 +30,10 @@
 <script>
 import {
   mdiCloudCheckOutline,
-  mdiCloudAlert
+  mdiCloudAlert,
+  mdiInformationOutline,
+  mdiAlertOutline,
+  mdiCommentOutline
 } from '@mdi/js';
 
 export default {
@@ -43,13 +46,46 @@ export default {
   },
   computed: {
     title () {
-      return (this.type === 'success') ? 'Success !' : 'Error !'
+      switch(this.type) {
+        case 'success':
+          return 'Success !'
+        case 'error':
+          return 'Error !'
+        case 'warning':
+          return 'Warning !'
+        case 'info':
+          return 'Note: '
+        default:
+          return 'Title'
+      }
     },
     color () {
-      return (this.type === 'success') ? 'success' : 'error'
+      switch(this.type) {
+        case 'success':
+          return 'success'
+        case 'error':
+          return 'error'
+        case 'warning':
+          return 'warning'
+        case 'info':
+          return 'info'
+        default:
+          return 'secondary'
+      }
     },
     icon () {
-      return (this.type === 'success') ? mdiCloudCheckOutline : mdiCloudAlert
+      switch(this.type) {
+        case 'success':
+          return mdiCloudCheckOutline
+        case 'error':
+          return mdiCloudAlert
+        case 'warning':
+          return mdiAlertOutline
+        case 'info':
+          return mdiInformationOutline
+        default:
+          return mdiCommentOutline
+      }
     },
     bottom () {
       return !this.top
@@ -67,7 +103,7 @@ export default {
     left: { type: Boolean, default: false },
     type: {
       validator (value) {
-        return [ 'success', 'error' ].indexOf(value) !== -1
+        return [ 'success', 'error', 'warning', 'info' ].indexOf(value) !== -1
       }
     }
   },

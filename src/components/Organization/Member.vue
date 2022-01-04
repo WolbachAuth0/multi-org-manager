@@ -1,15 +1,37 @@
 <template>
-  <v-dialog v-model="isShown"
-            max-width="50%"
-  >
+  <v-dialog v-model="isShown" max-width="50%">
     <v-card class="pa-6">
-      <v-avatar>
-        <img :src="user.picture" :alt="user.user_id">
-      </v-avatar>
-      <br/>
-      Name = {{ user.name }}<br/>
-      Email = {{ user.email }}<br/>
-      User ID= {{ user.user_id }}<br/>
+      <v-row v-if="user">
+        <v-col cols="12">
+          <v-card-title>
+            {{ user.name }}
+          </v-card-title>
+          <v-list three-line>
+            <v-list-item key="1">
+              <v-list-item-avatar>
+                <v-img :src="user.picture"></v-img>
+              </v-list-item-avatar>
+
+              <v-list-item-content>
+                <v-list-item-title v-html="user.email"></v-list-item-title>
+                <v-list-item-subtitle>user ID: {{user.user_id}}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="12">
+          <v-card-title>
+            Assigned Roles
+          </v-card-title>
+          <v-data-table :headers="table.headers" :items="roles" hide-default-footer>
+            <template v-slot:[`item.id`]="{ item }">
+            </template>
+          </v-data-table>
+        </v-col>
+      </v-row>
       
       <v-card-actions>
         <v-btn color="primary" @click="saveMember">
@@ -35,6 +57,13 @@ export default {
       isShown: false,
       roles: [],
       loading: false,
+      table: {
+        headers: [
+          { text: 'Name', value: 'name', filterable: true, sortable: true },
+          { text: 'Description', value: 'description', filterable: true, sortable: true },
+          { text: '', value: 'id', filterable: false, sortable: false },
+        ] 
+      },
     }
   },
   props: {

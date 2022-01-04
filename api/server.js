@@ -34,7 +34,7 @@ app.use('/', serveStatic(path.join(__dirname, './../dist')))
 // API routes
 app.use('/api', require('./routes/hello')) // should serve api spec
 app.use('/api/organizations', require('./routes/organizations'))
-// app.use('/api/users', require('./routes/users'))
+app.use('/api/roles', require('./routes/roles'))
 
 // this * route is to serve project on different page routes except root `/`
 app.get(/.*/, (req, res) => {

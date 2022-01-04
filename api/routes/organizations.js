@@ -42,6 +42,15 @@ router.route('/:org_id/members/:user_id/roles')
     checkJWTScopes(['read:member_roles'], options),
     organizations.readMemberRoles
   )
+  .post(
+    checkJWTScopes(['create:member_roles'], options),
+    schemaValidator(organizations.schema.roles),
+    organizations.addMemberRoles
+  )
+  .delete(
+    checkJWTScopes(['delete:member_roles'], options),
+    organizations.removeMemberRoles
+  )
 
 // Organization Connections
 router.route('/:org_id/connections')

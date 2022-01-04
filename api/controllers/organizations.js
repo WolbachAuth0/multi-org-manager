@@ -25,6 +25,8 @@ module.exports = {
   getMembers,
   update,
   readMemberRoles,
+  addMemberRoles,
+  removeMemberRoles,
   listEnabledConnections,
   getEnabledConnection,
   createEnabledConnection,
@@ -97,6 +99,16 @@ module.exports = {
           items: { type: 'string' }
         },
         send_invitation_email: { type: 'boolean' }
+      }
+    },
+    roles: {
+      type: 'object',
+      required: [ 'roles' ],
+      properties: {
+        roles: {
+          type: 'array',
+          items: { type: 'string' }
+        }
       }
     }
   }
@@ -183,6 +195,41 @@ async function update (req, res) {
 
 // roles
 async function readMemberRoles (req, res) {
+  const id = req.params.org_id
+  const user_id = req.params.user_id
+  try {
+    const data = await management.organizations.getMemberRoles({ id, user_id })
+    const payload = {
+      status: 200,
+      message: `Found ${data.length} roles for member ${user_id}.`,
+      data
+    }
+    const json = responseFormatter(req, res, payload)
+    res.status(payload.status).json(json)
+  } catch (error) {
+    handleError(req, res, error)
+  }
+}
+
+async function addMemberRoles (req, res) {
+  const id = req.params.org_id
+  const user_id = req.params.user_id
+  const body = req.body
+  try {
+    const data = await management.organizations.addMemberRoles({ id, user_id }, body)
+    const payload = {
+      status: 200,
+      message: `Added ${body.roles.length} roles to member ${user_id}.`,
+      data
+    }
+    const json = responseFormatter(req, res, payload)
+    res.status(payload.status).json(json)
+  } catch (error) {
+    handleError(req, res, error)
+  }
+}
+
+async function removeMemberRoles (req, res) {
   const id = req.params.org_id
   const user_id = req.params.user_id
   try {

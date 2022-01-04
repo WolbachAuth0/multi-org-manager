@@ -28,9 +28,7 @@
           <v-btn icon @click="editMember(item)">
             <v-icon>mdi-pencil-circle-outline</v-icon>
           </v-btn>
-          <!-- <v-btn icon @click="removeMember(item.user_id)">
-            <v-icon>mdi-delete-circle-outline</v-icon>
-          </v-btn> -->
+
         </template>
       </v-data-table>
     </v-card>
@@ -92,13 +90,6 @@ export default {
     org: { type: Object }
   },
   methods: {
-    /**
-     * Gets called when the component is mounted.
-     * Fetches an array of users which are members of the organization.
-     *
-     * @async
-     * @returns {Object[]} An array of users.  
-     */
     async fetchMembers () {
       const url = `/organizations/${this.$auth.user.org_id}/members`
       const accesstoken = await this.$auth.getTokenSilently()

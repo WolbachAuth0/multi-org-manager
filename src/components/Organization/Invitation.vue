@@ -1,22 +1,37 @@
 <template>
   <v-dialog v-model="isShown">
-    <v-card class="pa-6">
+    <div class="d-flex justify-center">
+      <v-card width="50%">
+        <v-toolbar dark color="secondary">
+          <v-card-title>
+            Invite New Member
+          </v-card-title>
 
-      (TODO: Build a form for creating a new invitation)
+          <v-spacer></v-spacer>
 
-      <v-card-actions>
-        <v-btn color="primary" @click="createInvitation">
-          Invite Member
-        </v-btn>
-        <v-btn color="error" @click="isShown = false">
-          Close
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+          <v-toolbar-items>
+            <v-btn icon dark @click="isShown = false" >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+
+        <v-card-text>
+          (TODO: Build a form for creating a new invitation)
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn color="primary" @click="createInvitation">
+            Send Invitation
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </div>
   </v-dialog>
 </template>
 
 <script>
+import EventBus from '../../helpers/eventBus.js'
 
 export default {
   name: 'Invitation',
@@ -44,7 +59,14 @@ export default {
   },
   methods: {
     async createInvitation () {
-      console.log('You clicked the button!')
+      const announcement = {
+        text: 'Creating invitations is not currently supported. Work in progress.',
+        type: 'info',
+        top: true,
+        right: true,
+        left: false
+      }
+      EventBus.$emit('announce', announcement)
     },
   }
 }

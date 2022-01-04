@@ -18,6 +18,7 @@
           <v-avatar size="40" color="info">
             <span>{{ item.invitee.email[0].toUpperCase() }}</span>
           </v-avatar>
+          {{ item.invitee.email }}
         </template>
 
         <template v-slot:[`item.ticket_id`]="{ item }">

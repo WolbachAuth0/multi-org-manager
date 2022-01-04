@@ -1,22 +1,37 @@
 <template>
   <v-dialog v-model="isShown">
-    <v-card class="pa-6">
+    <div class="d-flex justify-center">
+      <v-card width="50%">
+        <v-toolbar dark color="secondary">
+          <v-card-title>
+            Enable New Connection
+          </v-card-title>
 
-      (TODO: Create a form for creating a new connection)
+          <v-spacer></v-spacer>
+          
+          <v-toolbar-items>
+            <v-btn icon dark @click="isShown = false" >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
 
-      <v-card-actions>
-        <v-btn color="primary" @click="createConnection">
-          Create Connection
-        </v-btn>
-        <v-btn color="error" @click="isShown = false">
-          Close
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+        <v-card-text class="ma-5">
+          (TODO: Create a form for creating a new connection)
+        </v-card-text>
+
+        <v-card-actions class="ma-5">
+          <v-btn color="primary" @click="createConnection">
+            Create Connection
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </div>
   </v-dialog>
 </template>
 
 <script>
+import EventBus from '../../helpers/eventBus.js'
 
 export default {
   name: 'Connection',
@@ -44,7 +59,14 @@ export default {
   },
   methods: {
     async createConnection () {
-      console.log('You clicked the button!')
+      const announcement = {
+        text: 'Creating new connections is not currently supported. Work in progress.',
+        type: 'info',
+        top: true,
+        right: true,
+        left: false
+      }
+      EventBus.$emit('announce', announcement)
     },
   }
 }

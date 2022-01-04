@@ -30,7 +30,7 @@ export const useAuth0 = ({
       }
     },
     methods: {
-      async loginWithPopup(options, config) {
+      async loginWithPopup (options, config) {
         this.popupOpen = true
 
         try {
@@ -45,7 +45,7 @@ export const useAuth0 = ({
           this.popupOpen = false
         }
       },
-      async handleRedirectCallback() {
+      async handleRedirectCallback () {
         this.isLoading = true
         try {
           await this.auth0Client.handleRedirectCallback()
@@ -57,7 +57,7 @@ export const useAuth0 = ({
           this.isLoading = false
         }
       },
-      loginWithRedirect(opts) {
+      loginWithRedirect (opts) {
         // always ensure that openid, profile and email are requested scopes.
         const scopes = ['openid', 'profile', 'email'] 
         let options = {}
@@ -78,7 +78,7 @@ export const useAuth0 = ({
        * @param {*} opts 
        * @returns 
        */
-      getIdTokenClaims(opts) {
+      getIdTokenClaims (opts) {
         return this.auth0Client.getIdTokenClaims(opts)
       },
       /**
@@ -86,28 +86,33 @@ export const useAuth0 = ({
        * @param {*} opts 
        * @returns 
        */
-      getTokenSilently(opts) {
+      getTokenSilently (opts) {
         return this.auth0Client.getTokenSilently(opts)
       },
-      getTokenWithPopup(opts) {
+      getTokenWithPopup (opts) {
         return this.auth0Client.getTokenWithPopup(opts)
+      },
+      async getPermissions () {
+        const accesstoken  = await this.getTokenSilently()
+        const accessTokenDecoded = accesstoken ? this.decodeToken(accesstoken) : { permissions: [] }
+        return accessTokenDecoded.permissions
       },
       /**
        * Decodes a token and returns a javascript object
        * @param {String} token A base64 encoded token (access or id) 
        * @returns 
        */
-      decodeToken(token) {
+      decodeToken (token) {
         const base64Payload = token.split('.')[1]
         const payload = Buffer.from(base64Payload, 'base64')
         return JSON.parse(payload.toString())        
       },
-      logout(opts) {
+      logout (opts) {
         const options = Object.assign(typeof opts == 'object' ? opts : {}, { returnTo: process.env.VUE_APP_AUTH0_LOGOUTURL })
         return this.auth0Client.logout(options)
       }
     },
-    async created() {
+    async created () {
       this.auth0Client = await createAuth0Client({
         ...options,
         client_id: options.clientId,
@@ -132,7 +137,6 @@ export const useAuth0 = ({
       }
     },
   })
-
   return instance
 }
 

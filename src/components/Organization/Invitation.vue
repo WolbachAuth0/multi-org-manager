@@ -16,11 +16,11 @@
           </v-toolbar-items>
         </v-toolbar>
 
-        <v-card-text>
+        <v-card-text class="ma-5">
           (TODO: Build a form for creating a new invitation)
         </v-card-text>
 
-        <v-card-actions>
+        <v-card-actions class="ma-5">
           <v-btn color="primary" @click="createInvitation">
             Send Invitation
           </v-btn>

@@ -9,8 +9,8 @@ function checkJWTOrgID(org_id) {
   return checkJWTScopes([org_id], { customScopeKey: 'org_id', failWithError: true })
 }
 
-function checkJWTPermissions(permissions) {
-  return checkJWTScopes(['read:organizations'], { customScopeKey: 'permissions', failWithError: true })
+function checkJWTPermissions() {
+  return checkJWTScopes(permissions, { customScopeKey: 'permissions', failWithError: true })
 }
 
 // Organizations

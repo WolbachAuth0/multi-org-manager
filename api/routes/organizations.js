@@ -5,9 +5,12 @@ const organizations = require('./../controllers/organizations')
 
 module.exports = router
 
-const options = {
-  customScopeKey: 'permissions',
-  failWithError: true
+function checkJWTOrgID(org_id) {
+  return checkJWTScopes([org_id], { customScopeKey: 'org_id', failWithError: true })
+}
+
+function checkJWTPermissions(permissions) {
+  return checkJWTScopes(['read:organizations'], { customScopeKey: 'permissions', failWithError: true })
 }
 
 // Organizations
@@ -17,12 +20,13 @@ router
 
 router.route('/:org_id')
   .all(verifyJWT)
+  .all(checkJWTOrgID(req.params.org_id))
   .get(
-    checkJWTScopes(['read:organizations'], options),
+    checkJWTPermissions(['read:organizations']),
     organizations.getByID
   )
   .patch(
-    checkJWTScopes(['update:organizations'], options),
+    checkJWTPermissions(['update:organizations']),
     schemaValidator(organizations.schema.organization),
     organizations.update
   )
@@ -30,72 +34,78 @@ router.route('/:org_id')
 // Organization Members
 router.route('/:org_id/members')
   .all(verifyJWT)
+  .all(checkJWTOrgID(req.params.org_id))
   .get(
-    checkJWTScopes(['read:members'], options),
+    checkJWTPermissions(['read:members']),
     organizations.getMembers
   )
 
 // Organization Member Roles
 router.route('/:org_id/members/:user_id/roles')
   .all(verifyJWT)
+  .all(checkJWTOrgID(req.params.org_id))
   .get(
-    checkJWTScopes(['read:member_roles'], options),
+    checkJWTPermissions(['read:member_roles']),
     organizations.readMemberRoles
   )
   .post(
-    checkJWTScopes(['create:member_roles'], options),
+    checkJWTPermissions(['create:member_roles']),
     schemaValidator(organizations.schema.roles),
     organizations.addMemberRoles
   )
   .delete(
-    checkJWTScopes(['delete:member_roles'], options),
+    checkJWTPermissions(['delete:member_roles']),
     organizations.removeMemberRoles
   )
 
 // Organization Connections
 router.route('/:org_id/connections')
   .all(verifyJWT)
+  .all(checkJWTOrgID(req.params.org_id))
   .get(
-    checkJWTScopes(['read:connections'], options),
+    checkJWTPermissions(['read:connections']),
     organizations.listEnabledConnections
   )
 
 router.route('/:org_id/connections/:connection_id')
   .all(verifyJWT)
+  .all(checkJWTOrgID(req.params.org_id))
   .get(
-    checkJWTScopes(['update:connections'], options),
+    checkJWTPermissions(['update:connections']),
     organizations.getEnabledConnection
   )
   .patch(
-    checkJWTScopes(['update:connections'], options),
+    checkJWTPermissions(['update:connections']),
     schemaValidator(organizations.schema.connection),
     organizations.updateEnabledConnection
   )
   .post(
-    // checkJWTScopes(['create:organization_connections'], options),
+    checkJWTPermissions(['create:connections']),
     schemaValidator(organizations.schema.update),
     organizations.createEnabledConnection
   )
 
 router.route('/:org_id/invitations')
   .all(verifyJWT)
+  .all(checkJWTOrgID(req.params.org_id))
   .get(
-    checkJWTScopes(['read:invitations'], options),
+    checkJWTPermissions(['read:invitations']),
     organizations.listInvitations
   )
   .post(
-    checkJWTScopes(['create:invitations'], options),
+    checkJWTPermissions(['create:invitations']),
     schemaValidator(organizations.schema.invitation),
     organizations.createInvitation
   )
 
 router.route('/:org_id/invitations/:invitation_id')
   .all(verifyJWT)
+  .all(checkJWTOrgID(req.params.org_id))
   .get(
-    checkJWTScopes(['read:invitations'], options),
+    checkJWTPermissions(['read:invitations']),
     organizations.getInvitation
   )
   .delete(
-    checkJWTScopes(['delete:invitations'], options),
+    checkJWTPermissions(['delete:invitations']),
     organizations.deleteInvitation
   )

@@ -1,16 +1,15 @@
 const router = require('express').Router()
-const { verifyJWT, checkJWTScopes } = require('./../middleware/auth')
+const { verifyJWT, checkJWTScopes, checkJWTPermissions } = require('./../middleware/auth')
 const schemaValidator = require('./../middleware/schemaValidator')
 const organizations = require('./../controllers/organizations')
 
 module.exports = router
 
-function checkJWTOrgID(org_id) {
-  return checkJWTScopes([org_id], { customScopeKey: 'org_id', failWithError: true })
-}
-
-function checkJWTPermissions() {
-  return checkJWTScopes(permissions, { customScopeKey: 'permissions', failWithError: true })
+function checkJWTOrgID (req, res, next) {
+  const customScopeKey = 'org_id'
+  const failWithError = true
+  const orgIDs = [ req.params.org_id ]
+  return checkJWTScopes(orgIDs, { customScopeKey, failWithError })(req, res, next)
 }
 
 // Organizations
@@ -20,7 +19,7 @@ router
 
 router.route('/:org_id')
   .all(verifyJWT)
-  .all(checkJWTOrgID(req.params.org_id))
+  .all(checkJWTOrgID)
   .get(
     checkJWTPermissions(['read:organizations']),
     organizations.getByID
@@ -34,7 +33,7 @@ router.route('/:org_id')
 // Organization Members
 router.route('/:org_id/members')
   .all(verifyJWT)
-  .all(checkJWTOrgID(req.params.org_id))
+  .all(checkJWTOrgID)
   .get(
     checkJWTPermissions(['read:members']),
     organizations.getMembers
@@ -43,7 +42,7 @@ router.route('/:org_id/members')
 // Organization Member Roles
 router.route('/:org_id/members/:user_id/roles')
   .all(verifyJWT)
-  .all(checkJWTOrgID(req.params.org_id))
+  .all(checkJWTOrgID)
   .get(
     checkJWTPermissions(['read:member_roles']),
     organizations.readMemberRoles
@@ -61,7 +60,7 @@ router.route('/:org_id/members/:user_id/roles')
 // Organization Connections
 router.route('/:org_id/connections')
   .all(verifyJWT)
-  .all(checkJWTOrgID(req.params.org_id))
+  .all(checkJWTOrgID)
   .get(
     checkJWTPermissions(['read:connections']),
     organizations.listEnabledConnections
@@ -69,7 +68,7 @@ router.route('/:org_id/connections')
 
 router.route('/:org_id/connections/:connection_id')
   .all(verifyJWT)
-  .all(checkJWTOrgID(req.params.org_id))
+  .all(checkJWTOrgID)
   .get(
     checkJWTPermissions(['update:connections']),
     organizations.getEnabledConnection
@@ -87,7 +86,7 @@ router.route('/:org_id/connections/:connection_id')
 
 router.route('/:org_id/invitations')
   .all(verifyJWT)
-  .all(checkJWTOrgID(req.params.org_id))
+  .all(checkJWTOrgID)
   .get(
     checkJWTPermissions(['read:invitations']),
     organizations.listInvitations
@@ -100,7 +99,7 @@ router.route('/:org_id/invitations')
 
 router.route('/:org_id/invitations/:invitation_id')
   .all(verifyJWT)
-  .all(checkJWTOrgID(req.params.org_id))
+  .all(checkJWTOrgID)
   .get(
     checkJWTPermissions(['read:invitations']),
     organizations.getInvitation

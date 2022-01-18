@@ -1,5 +1,6 @@
 const { auth, requiresAuth } = require('express-openid-connect')
 const checkJWTScopes = require('express-jwt-authz')
+// const checkJWTScopes = require('./checkJWTScopes')
 const jwt = require('express-jwt')
 const jwks = require('jwks-rsa')   
 
@@ -27,9 +28,16 @@ const verifyJWT = jwt({
   algorithms: ['RS256']
 })
 
+function checkJWTPermissions (permissions) {
+  const customScopeKey = 'permissions'
+  const failWithError = true
+  return checkJWTScopes(permissions, { customScopeKey, failWithError })
+}
+
 module.exports = {
   oidcMiddleware,
   verifyJWT,
   requiresAuth,
-  checkJWTScopes
+  checkJWTScopes,
+  checkJWTPermissions
 }

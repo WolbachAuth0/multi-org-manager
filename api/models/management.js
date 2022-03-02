@@ -1,5 +1,3 @@
-const path = require('path')
-
 /**
  * Create an instance of the Auth0 Management API client
  * with the provided scopes.
@@ -16,7 +14,6 @@ module.exports = function (scopes) {
       audience: `https://${process.env.VUE_APP_AUTH0_DOMAIN}/api/v2/`,
       scope: scopes.join(' ')
     }
-    
     const ManagementClient = require('auth0').ManagementClient
     const management = new ManagementClient(options)
     return management

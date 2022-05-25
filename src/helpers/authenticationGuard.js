@@ -28,5 +28,3 @@ export const authenticationGuard = (to, from, next) => {
     authService.loginWithRedirect(options);
   }
 }
-
-

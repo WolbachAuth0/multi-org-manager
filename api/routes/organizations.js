@@ -18,8 +18,8 @@ router
   .get(organizations.list)
 
 router.route('/:org_id')  // https://domain/api/v1/organizations/:org_id
-  .all(verifyJWT)   // checks signature on the access token
-  .all(checkJWTOrgID)   // checks to make sure the access token has organization id scope
+  .all(verifyJWT)         // checks signature on the access token
+  .all(checkJWTOrgID)     // checks to make sure the access token has organization id scope
   .get(
     checkJWTPermissions(['read:organizations']),
     organizations.getByID

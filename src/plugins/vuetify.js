@@ -4,6 +4,9 @@ import colors from 'vuetify/lib/util/colors'
 
 Vue.use(Vuetify);
 
+/**
+ * This plugin is here to handle color themes for the app.
+ */
 export default new Vuetify({
   theme: {
     dark: false,

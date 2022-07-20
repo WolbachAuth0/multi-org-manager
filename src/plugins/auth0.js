@@ -1,5 +1,6 @@
 /**
- *  External Modules
+ * This plugin is the Auth0 vue.js module. It's purpose is to handle authentication
+ * and authorization inside the vue.js application.
  */
 import Vue from 'vue'
 import createAuth0Client from '@auth0/auth0-spa-js'

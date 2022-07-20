@@ -5,7 +5,6 @@ import router from './router'
 
 import Axios from './plugins/axios'
 import vuetify from '@/plugins/vuetify'
-// import helpers from '@/plugins/helper'
 import { Auth0Plugin } from '@/plugins/auth0'
 
 Vue.use(Axios)

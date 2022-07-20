@@ -1,6 +1,11 @@
   
 import { getInstance } from '@/plugins/auth0'
 
+/**
+ * The authentication guard module is to prevent navigation to protected routes
+ * when no user has been authenticated.
+ */
+
 export const authenticationGuard = (to, from, next) => {
   const authService = getInstance()
 

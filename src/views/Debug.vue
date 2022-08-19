@@ -32,7 +32,7 @@
 
               <v-col cols="6">
                 <pre class="json" v-if="showIDToken">
-                  {{ userJSON | pretty }}
+{{ userJSON | pretty }}
                 </pre>
               </v-col>
             </v-row>
@@ -43,7 +43,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="primary" @click="showIDToken = !showIDToken">
-              {{ showIDToken ? 'Hide Token' : 'Show Token' }}
+{{ showIDToken ? 'Hide Token' : 'Show Token' }}
             </v-btn>
           </v-card-actions>
         </v-card>

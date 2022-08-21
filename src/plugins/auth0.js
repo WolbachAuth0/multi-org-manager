@@ -4,7 +4,8 @@
  */
 import Vue from 'vue'
 import createAuth0Client from '@auth0/auth0-spa-js'
- 
+import { Buffer } from 'buffer'
+
 /** Define a default action to perform after authentication */
 const DEFAULT_REDIRECT_CALLBACK = () => window.history.replaceState({}, document.title, window.location.pathname)
 const DEFAULT_REDIRECT_URI = `${process.env.VUE_APP_DOMAIN}/dashboard`

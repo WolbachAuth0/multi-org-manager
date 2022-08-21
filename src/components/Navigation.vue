@@ -84,6 +84,7 @@
 import {
 	mdiCogOutline,
 	mdiHomeCircle,
+	mdiApplicationCog,
 	mdiMonitorDashboard,
 	mdiLogoutVariant,
 	mdiLoginVariant,
@@ -102,12 +103,37 @@ export default {
 	}),
 	computed: {
 		routes() {
+			const roles = this.$auth.isAuthenticated ? this.$auth.user['science-experiment/roles'] : []
+			const isAdmin = roles.includes('Organization Member Administrator')
+			const isOwner = roles.includes('Organization Owner')
+			const isMember = roles.includes('Organization Member')
 			let routes = [
-				{ title: 'Home', icon: mdiHomeCircle , to: '/', auth: false },
-				{ title: 'Dashboard', icon: mdiMonitorDashboard , to: '/dashboard', auth: true },
-				{ title: 'Debug', icon: mdiCogOutline , to: '/debug', auth: true }
+				{
+					title: 'Home',
+					icon: mdiHomeCircle ,
+					to: '/',
+					show: true
+				},
+				{
+					title: 'Member Portal',
+					icon: mdiApplicationCog,
+					to: '/members',
+					show: isMember
+				},
+				{
+					title: 'Admin Dashboard',
+					icon: mdiMonitorDashboard,
+					to: '/dashboard',
+					show: isAdmin
+				},
+				{
+					title: 'Debug',
+					icon: mdiCogOutline,
+					to: '/debug',
+					show: true
+				}
 			]
-			return this.$auth.isAuthenticated ? routes : routes.filter(x => !x.auth)
+			return routes.filter(x => x.show)
 		},
 		signInOut() {
 			return {

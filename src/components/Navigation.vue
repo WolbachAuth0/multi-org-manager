@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<!-- Application bar -->
-		<v-app-bar app clipped-left dark>
-			<v-btn plain float-left max-height="50" href="https://auth0.com/" target="__blank">
-				<v-img :src="shield" contain max-height="40"></v-img>
+		<v-app-bar app clipped-left dark class="primary accent-3">
+			<v-btn id="logo" plain float-left max-height="50" :href="oktahomeURL" target="__blank">
+				<v-img :src="logo" contain max-height="50"></v-img>
 			</v-btn>
 			
       <v-toolbar-title >
@@ -20,11 +20,11 @@
 		</v-app-bar>
 
 		<!-- Navigation Drawer -->
-		<v-navigation-drawer app floating :clipped="true" permanent dark>
+		<v-navigation-drawer app floating :clipped="true" permanent dark class="primary">
 			
 			<v-list>
 				<!-- The user avatar, or empty avatar with login  -->
-				<v-list-item v-if="$auth.isAuthenticated" class="px-2" link to="/profile">
+				<v-list-item v-if="$auth.isAuthenticated" class="px-2 primary" link to="/profile">
 					<v-list-item-avatar>
 						<img :src="$auth.user.picture" :alt="$auth.user.name">
 					</v-list-item-avatar>					
@@ -38,8 +38,8 @@
 					</v-list-item-content>
 				</v-list-item>
 
-				<v-list-item v-else class="px-2" link @click="authenticate()" >
-					<v-list-item-avatar color="primary">
+				<v-list-item v-else class="px-2 primary" link @click="authenticate()">
+					<v-list-item-avatar color="blue darken-3">
 						<v-icon x-large>{{ mdiAccountCircle }}</v-icon>
 					</v-list-item-avatar>
 					<v-list-item-content>
@@ -50,7 +50,7 @@
 				</v-list-item>
 
 				<!-- Login / Logout button -->
-				<v-list-item @click="authenticate()">
+				<v-list-item @click="authenticate()" class="px-2 primary">
 					<v-list-item-icon>
 						<v-icon>{{ signInOut.icon }}</v-icon>
 					</v-list-item-icon>
@@ -65,7 +65,7 @@
 			<v-divider></v-divider>
 
 			<v-list dense nav>
-				<v-list-item v-for="item in routes" :key="item.title" :to="item.to">
+				<v-list-item v-for="item in routes" :key="item.title" :to="item.to" class="primary">
 					<v-list-item-icon>
 						<v-icon>{{ item.icon }}</v-icon>
 					</v-list-item-icon>
@@ -95,7 +95,10 @@ export default {
 	data: () => ({
 		shieldSRC: 'https://cdn.auth0.com/manhattan/versions/1.3435.0/assets/./badge.png',
 		shield: require('../assets/shield.svg'),
-		auth0docs: require('../assets/auth0docs.svg')
+		logo: require('../assets/okta-logo-white.svg'),
+		auth0docs: require('../assets/auth0docs.svg'),
+		oktahomeURL: 'https://www.okta.com/',
+		auth0docsURL: 'https://auth0.com/docs'
 	}),
 	computed: {
 		routes() {
@@ -132,3 +135,9 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+	#logo {
+		opacity: 1.00;
+	}
+</style>

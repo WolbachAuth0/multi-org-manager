@@ -12,13 +12,13 @@
 							 @hide="hide"
 		></announcer>
 
-		<youtube-background></youtube-background>
+		<!-- <youtube-background></youtube-background> -->
 		
 		<v-fade-transition mode="out-in" duration type="animation">
-			<v-main>		
+			<v-main class="gradient" light>	
 				<v-container fluid>
 					<v-layout align-center justify-center>
-						<v-flex md10 sm12>
+						<v-flex>
         			<router-view :key="$route.fullPath"></router-view>
 						</v-flex>
 					</v-layout>
@@ -94,3 +94,10 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+	main.gradient {
+		/* background-image: linear-gradient(#CFD8DC, #54558d); */
+		background-image: linear-gradient(#78909C, #CFD8DC);
+	}
+</style>

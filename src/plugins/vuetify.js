@@ -1,19 +1,33 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib/framework';
+import Vue from 'vue'
+import Vuetify from 'vuetify/lib/framework'
 import colors from 'vuetify/lib/util/colors'
 
-Vue.use(Vuetify);
+Vue.use(Vuetify)
+const okta = {
+  blue: '#07297a',
+  lightblue: '#007DC1',
+  darkblue: '#151a66',
+  grey: '#757892',
+  lightgrey: '#e4e5ed'
+}
 
-/**
- * This plugin is here to handle color themes for the app.
- */
+const defaults = {
+  primary: '#1976D2',
+  secondary: '#424242',
+  accent: '#82B1FF',
+  error: '#FF5252',
+  info: '#2196F3',
+  success: '#4CAF50',
+  warning: '#FFC107',
+}
+
 export default new Vuetify({
   theme: {
     dark: false,
     themes: {
       dark: {
-        background: colors.grey.darken5,
-        surface: colors.grey.darken3,
+        background: colors.grey.darken2,
+        surface: colors.grey,
         primary: colors.blue.lighten3,
         secondary: colors.blueGrey.darken2,
         info: colors.blueGrey.lighten3,
@@ -21,18 +35,17 @@ export default new Vuetify({
         success: colors.green.darken1,
         warning: colors.yellow.lighten4,
         error: colors.red.lighten4,
+        
       },
       light: {
         background: colors.grey.lighten5,
         surface: colors.grey.lighten4,
-        // primary: colors.red.darken1, // #E53935
-        // secondary: colors.red.lighten4, // #FFCDD2
-        // accent: colors.indigo.base,
-        // info: colors.blueGrey.lighten3,
-        // success: colors.green.lighten1,
-        // warning: colors.yellow,
-        // error: colors.red.darken3,
-      },
+        primary: okta.darkblue,
+        secondary: okta.lightblue,
+        accent: colors.blue.base,
+        lightgrey: okta.lightgrey,
+        darkgrey: okta.darkgrey
+      }
     }
   },
   icons: {

@@ -7,6 +7,7 @@ import Meta from 'vue-meta'
 import Home from '@/views/Home.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import Debug from '@/views/Debug.vue'
+import Members from '@/views/Members.vue'
 
 Vue.use(Meta, {
 	keyName: 'metaInfo',
@@ -21,7 +22,8 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     { path: '/', name: 'Welcome', component: Home },
-    { path: '/dashboard', name: 'Dashboard', component: Dashboard, beforeEnter: authenticationGuard },
+    { path: '/members', name: 'Members Portal', component: Members, beforeEnter: authenticationGuard },
+    { path: '/dashboard', name: 'Admin Dashboard', component: Dashboard, beforeEnter: authenticationGuard },
     { path: '/debug', name: 'Debug', component: Debug, beforeEnter: authenticationGuard }
   ]
 })

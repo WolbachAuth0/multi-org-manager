@@ -14,7 +14,6 @@
 
     <v-tabs v-model="tab">
       <v-tabs-slider color="blue"></v-tabs-slider>
-
       <v-tab key="overview">Overview</v-tab>
       <v-tab key="members">Members</v-tab>
       <v-tab key="invitations">Invitations</v-tab>

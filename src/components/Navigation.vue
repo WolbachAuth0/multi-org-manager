@@ -23,7 +23,7 @@
 		<!-- Navigation Drawer -->
 		<v-navigation-drawer app floating :clipped="true" permanent dark class="primary">
 			
-			<v-list>
+			<v-list nav>							
 				<!-- The user avatar, or empty avatar with login  -->
 				<v-list-item v-if="$auth.isAuthenticated" class="px-2 primary" link to="/profile">
 					<v-list-item-avatar>
@@ -38,33 +38,39 @@
 						</v-list-item-subtitle>
 					</v-list-item-content>
 				</v-list-item>
+
 				<v-list-item v-else class="px-2 primary" link @click="authenticate()">
 					<v-list-item-avatar color="blue darken-3">
 						<v-icon x-large>{{ mdiAccountCircle }}</v-icon>
 					</v-list-item-avatar>
 					<v-list-item-content>
 						<v-list-item-title class="text-h6">
-							<!-- Login -->
+							Login
 						</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
+			</v-list>
 
-				<!-- Login / Logout button -->
-				<v-list-item @click="authenticate()" class="px-2 primary">
+
+			<!-- Login to Organizations -->
+			<v-divider v-if="!$auth.isAuthenticated"></v-divider>
+
+			<v-list v-if="!$auth.isAuthenticated" dense nav>
+				<v-list-item  v-for="(item, i) in organizations" :key="i" @click="authenticate(item.id)">
 					<v-list-item-icon>
-						<v-icon>{{ signInOut.icon }}</v-icon>
+						<v-img :src="item.branding.logo_url" max-height="25" max-width="25" ></v-img>
 					</v-list-item-icon>
 
 					<v-list-item-content>
-						<v-list-item-title>{{ signInOut.title }}</v-list-item-title>
+						<v-list-item-title>{{ item.name }}</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
-
 			</v-list>
 
 			<v-divider></v-divider>
 
 			<v-list dense nav>
+				<!-- Application Routes -->
 				<v-list-item v-for="item in routes" :key="item.title" :to="item.to" class="primary" active-class="secondary">
 					<v-list-item-icon>
 						<v-icon>{{ item.icon }}</v-icon>
@@ -72,6 +78,17 @@
 
 					<v-list-item-content>
 						<v-list-item-title>{{ item.title }}</v-list-item-title>
+					</v-list-item-content>
+				</v-list-item>
+
+				<!-- Logout button -->
+				<v-list-item v-if="$auth.isAuthenticated" @click="logout()" class="px-2 primary">
+					<v-list-item-icon>
+						<v-icon>{{ mdiLogoutVariant }}</v-icon>
+					</v-list-item-icon>
+
+					<v-list-item-content>
+						<v-list-item-title>Log Out</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
 
@@ -99,10 +116,12 @@ export default {
 		logo: require('../assets/okta-logo-white.svg'),
 		auth0docs: require('../assets/auth0docs.svg'),
 		oktahomeURL: 'https://www.okta.com/',
-		auth0docsURL: 'https://auth0.com/docs'
+		auth0docsURL: 'https://auth0.com/docs',
+		organizations: [],
+		mdiLogoutVariant,
 	}),
 	computed: {
-		routes() {
+		routes () {
 			const roles = this.$auth.isAuthenticated ? this.$auth.user['science-experiment/roles'] : []
 			const isAdmin = roles.includes('Organization Member Administrator')
 			const isOwner = roles.includes('Organization Owner')
@@ -135,27 +154,58 @@ export default {
 			]
 			return routes.filter(x => x.show)
 		},
-		signInOut() {
-			return {
-				icon: this.$auth.isAuthenticated ? mdiLogoutVariant : mdiLoginVariant,
-				title: this.$auth.isAuthenticated ? 'Log Out' : 'Log In',
+		mdiAccountCircle () {
+			return mdiAccountCircle
+		},
+	},
+	async mounted () {
+    const orgs = await this.getOrganizations()
+    this.organizations = orgs.data
+		console.log(this.organizations)
+  },
+	methods: {
+		async getOrganizations () {
+      const response = await this.$http(null).get(`/organizations`)
+      return response.data
+    },
+    // https://auth0.com/blog/complete-guide-to-vue-user-authentication/#Add-User-Authentication
+		async authenticate (organization) {
+			if (this.$auth.isAuthenticated) {
+				const roles = this.$auth.isAuthenticated ? this.$auth.user['science-experiment/roles'] : []
+				this.redirect(roles)
+			} else {
+				this.login(organization)
 			}
 		},
-		mdiAccountCircle() {
-			return mdiAccountCircle
-		}
-	},
-	methods: {
-		// https://auth0.com/blog/complete-guide-to-vue-user-authentication/#Add-User-Authentication
-		async authenticate() {
+		async redirect (roles) {
+			const isAdmin = roles.includes('Organization Member Administrator')
+			const isOwner = roles.includes('Organization Owner')
+			const isMember = roles.includes('Organization Member')
+			let path = '/'
+			
+			if (isAdmin) {
+				path = '/dashboard'
+			} else if (isOwner || isMember) {
+				path = '/members'
+			}
+
+			this.$router.push({ path })
+		},
+		async login (organization) {
+			// https://auth0.github.io/auth0-spa-js/interfaces/redirectloginoptions.html
+			if (!this.$auth.isAuthenticated) {
+				const options = {
+					scope: 'openid profile email',
+					organization
+				}
+				this.$auth.loginWithRedirect(options)
+			}
+		},
+		async logout () {
 			if (this.$auth.isAuthenticated) {
 				// https://auth0.github.io/auth0-spa-js/interfaces/logoutoptions.html
 				this.$auth.logout({ returnTo: process.env.VUE_APP_DOMAIN })
         this.$router.push({ path: '/' })
-			} else {
-				// https://auth0.github.io/auth0-spa-js/interfaces/redirectloginoptions.html
-				const scopes = [ 'openid', 'profile', 'email' ]
-				this.$auth.loginWithRedirect({ scope: scopes.join(' ') })
 			}
 		}
 	}

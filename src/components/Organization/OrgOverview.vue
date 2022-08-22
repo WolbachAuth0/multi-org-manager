@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-6" color="blue lighten-5">
+  <v-card class="pa-6" color="surface">
     <v-card-title>Basic Info</v-card-title>
     <v-card-text>
       These are basic details needed to set up your organization.

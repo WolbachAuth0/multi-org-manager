@@ -1,5 +1,5 @@
 <template>
-  <v-card :color="background" class="pa-6 ma-3">
+  <v-card :color="surface" class="pa-6 ma-3">
 
     <v-card outlined raised class="pa-6 mx-6">
       <div class="d-flex justify-center my-2">

@@ -13,7 +13,7 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item key="id-token">
-        <v-card class="pa-6" color="blue lighten-5">
+        <v-card class="pa-6" color="surface">
         <!-- <v-card elevation="2" outlined class="ma-3 pa-3"> -->
           <v-card-title>Identity Token</v-card-title>
           <v-divider></v-divider>
@@ -49,7 +49,7 @@
       </v-tab-item>
 
       <v-tab-item key="access-token">
-        <v-card class="pa-6" color="blue lighten-5">
+        <v-card class="pa-6" color="surface">
         <!-- <v-card elevation="2" outlined class="ma-3 pa-3"> -->
           <v-card-title>Access Token</v-card-title>
           <v-divider></v-divider>

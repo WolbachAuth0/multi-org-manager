@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-6" color="blue lighten-5">
+  <v-card class="pa-6" color="surface">
     <v-card-title>
       Members
     </v-card-title>

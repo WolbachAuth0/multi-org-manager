@@ -19,7 +19,7 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item key="portal">
-        <v-card class="pa-6" color="blue lighten-5">
+        <v-card class="pa-6" color="surface">
           <v-card-title>
             Application
           </v-card-title>

@@ -12,7 +12,7 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item key="organizations">
-        <v-card class="pa-6" color="blue lighten-5">
+        <v-card class="pa-6" color="surface">
           <v-card-title>
             Organization Selector
           </v-card-title>
@@ -52,7 +52,7 @@
       </v-tab-item>
 
       <v-tab-item key="about">
-        <v-card class="pa-6" color="blue lighten-5">
+        <v-card class="pa-6" color="surface">
           <v-card-title>
             About
           </v-card-title>

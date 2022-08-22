@@ -6,12 +6,13 @@
 
     <v-tabs v-model="tab">
       <v-tabs-slider color="blue"></v-tabs-slider>
-      <v-tab key="organizations">Organizations</v-tab>
       <v-tab key="about">About</v-tab>
+      <!-- <v-tab key="organizations">Organizations</v-tab> -->
     </v-tabs>
 
     <v-tabs-items v-model="tab">
-      <v-tab-item key="organizations">
+
+      <!-- <v-tab-item key="organizations">
         <v-card class="pa-6" color="surface">
           <v-card-title>
             Organization Selector
@@ -49,7 +50,7 @@
 
           </v-card>
         </v-card>
-      </v-tab-item>
+      </v-tab-item> -->
 
       <v-tab-item key="about">
         <v-card class="pa-6" color="surface">

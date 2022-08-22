@@ -37,7 +37,6 @@
 						</v-list-item-subtitle>
 					</v-list-item-content>
 				</v-list-item>
-
 				<v-list-item v-else class="px-2 primary" link @click="authenticate()">
 					<v-list-item-avatar color="blue darken-3">
 						<v-icon x-large>{{ mdiAccountCircle }}</v-icon>
@@ -65,7 +64,7 @@
 			<v-divider></v-divider>
 
 			<v-list dense nav>
-				<v-list-item v-for="item in routes" :key="item.title" :to="item.to" class="primary">
+				<v-list-item v-for="item in routes" :key="item.title" :to="item.to" class="primary" active-class="secondary">
 					<v-list-item-icon>
 						<v-icon>{{ item.icon }}</v-icon>
 					</v-list-item-icon>
@@ -127,10 +126,10 @@ export default {
 					show: isAdmin
 				},
 				{
-					title: 'Debug',
+					title: 'Tokens',
 					icon: mdiCogOutline,
 					to: '/debug',
-					show: true
+					show: this.$auth.isAuthenticated
 				}
 			]
 			return routes.filter(x => x.show)

@@ -5,7 +5,7 @@ import colors from 'vuetify/lib/util/colors'
 Vue.use(Vuetify)
 const okta = {
   blue: '#07297a',
-  lightblue: '#007DC1',
+  lightblue: colors.blue.darken4, // '#0D47A1', // '#007DC1',
   darkblue: '#151a66',
   grey: '#757892',
   lightgrey: '#e4e5ed'
@@ -29,17 +29,16 @@ export default new Vuetify({
         background: colors.grey.darken2,
         surface: colors.grey,
         primary: colors.blue.lighten3,
-        secondary: colors.blueGrey.darken2,
+        secondary: colors.blueGrey.darken4,
         info: colors.blueGrey.lighten3,
         accent: colors.cyan.accent4,
         success: colors.green.darken1,
         warning: colors.yellow.lighten4,
         error: colors.red.lighten4,
-        
       },
       light: {
-        background: colors.grey.lighten5,
-        surface: colors.grey.lighten4,
+        // background: colors.grey.lighten5,
+        surface: colors.blue.lighten5,
         primary: okta.darkblue,
         secondary: okta.lightblue,
         accent: colors.blue.base,

@@ -1,0 +1,25 @@
+.bg {
+  background-image: url("https://images.pexels.com/photos/698485/pexels-photo-698485.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.row {
+  display: flex;
+}
+
+/* Create two equal columns that sits next to each other */
+.column {
+  flex: 50%;
+  padding: 10px;
+}
+.prompt-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 480px;
+  height: 100%;
+  justify-content: center;
+  background-color: rgb(60,60,60);
+}

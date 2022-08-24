@@ -89,13 +89,13 @@
 
 <script>
 export default {
-  name: 'Debug',
+  name: 'Tokens',
   metaInfo: {
-    title: 'Debug',
+    title: 'Tokens',
   },
   data () {
     return {
-      title: 'Debug',
+      title: 'Tokens',
       tab: null,
       showIDToken: true,
       showAccessToken: true,

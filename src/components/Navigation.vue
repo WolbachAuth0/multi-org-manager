@@ -58,7 +58,9 @@
 			<v-list v-if="!$auth.isAuthenticated" dense nav>
 				<v-list-item  v-for="(item, i) in organizations" :key="i" @click="authenticate(item.id)">
 					<v-list-item-icon>
-						<v-img :src="item.branding.logo_url" max-height="25" max-width="25" ></v-img>
+						<div class="rounded-circle d-inline-block white p-4">
+							<v-img :src="item.branding.logo_url" max-height="25" max-width="25" ></v-img>
+						</div>
 					</v-list-item-icon>
 
 					<v-list-item-content>
@@ -148,7 +150,7 @@ export default {
 				{
 					title: 'Tokens',
 					icon: mdiCogOutline,
-					to: '/debug',
+					to: '/tokens',
 					show: this.$auth.isAuthenticated
 				}
 			]

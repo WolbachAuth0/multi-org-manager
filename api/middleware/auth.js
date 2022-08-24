@@ -8,7 +8,8 @@ const jwks = require('jwks-rsa')
 const oidcMiddleware = auth({
   authRequired: false,
   auth0Logout: true,
-  issuerBaseURL: `https://${process.env.VUE_APP_AUTH0_DOMAIN}`,
+  issuerBaseURL:  `https://${process.env.VUE_APP_CUSTOM_DOMAIN}`,
+  // issuerBaseURL: `https://${process.env.VUE_APP_AUTH0_DOMAIN}`,
   baseURL: `${process.env.VUE_APP_DOMAIN}/`,
   clientID: process.env.VUE_APP_AUTH0_CLIENT_ID,
   secret: process.env.AUTH0_API_CLIENT_SECRET,
@@ -24,7 +25,8 @@ const verifyJWT = jwt({
     jwksUri: `https://${process.env.VUE_APP_AUTH0_DOMAIN}/.well-known/jwks.json`
   }),
   audience: process.env.VUE_APP_AUTH0_AUDIENCE,
-  issuer: `https://${process.env.VUE_APP_AUTH0_DOMAIN}/`,
+  // issuer: `https://${process.env.VUE_APP_AUTH0_DOMAIN}/`,
+  issuer: `https://${process.env.VUE_APP_CUSTOM_DOMAIN}/`,
   algorithms: ['RS256']
 })
 

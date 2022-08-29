@@ -65,6 +65,10 @@ router.route('/:org_id/connections')
     checkJWTPermissions(['read:connections']),
     organizations.listEnabledConnections
   )
+  .post(
+    checkJWTPermissions(['create:connections']),
+    organizations.createEnabledConnection
+  )
 
 router.route('/:org_id/connections/:connection_id')
   .all(verifyJWT)

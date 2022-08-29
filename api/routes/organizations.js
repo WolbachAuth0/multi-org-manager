@@ -87,6 +87,10 @@ router.route('/:org_id/connections/:connection_id')
     schemaValidator(organizations.schema.update),
     organizations.createEnabledConnection
   )
+  .delete(
+    checkJWTPermissions(['update:connections']),
+    organizations.deleteConnection
+  )
 
 router.route('/:org_id/invitations')
   .all(verifyJWT)

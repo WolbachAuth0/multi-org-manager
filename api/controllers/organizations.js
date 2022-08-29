@@ -32,6 +32,7 @@ module.exports = {
   getEnabledConnection,
   createEnabledConnection,
   updateEnabledConnection,
+  deleteConnection,
   listInvitations,
   getInvitation,
   createInvitation,
@@ -342,6 +343,24 @@ async function updateEnabledConnection (req, res) {
     res.status(payload.status).json(json)
   } catch (error) {
     handleError(req, res, error)
+  }
+}
+
+async function deleteConnection(req, res) {
+  const connection_id = req.params.connection_id;
+
+  try {
+    const data = await management.connections.delete({ id: connection_id });
+    const payload = {
+      status: 202,
+      message: `Deleted connection ${connection_id}`,
+      data,
+    };
+    const json = responseFormatter(req, res, payload);
+    res.status(payload.status).json(json);
+  } catch (error) {
+    console.error("error", error);
+    handleError(req, res, error);
   }
 }
 

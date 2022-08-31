@@ -96,5 +96,5 @@ This application has two components - a Vue.js client application and an Express
 
 ## Authors
 
-- [@aaron.wolbach](https://github.com/WolbachAuth0)
-
+- [Aaron Wolbach](https://github.com/WolbachAuth0)
+- [Tyler Keesling](https://github.com/tylerkeesling)

@@ -347,20 +347,20 @@ async function updateEnabledConnection (req, res) {
 }
 
 async function deleteConnection(req, res) {
-  const connection_id = req.params.connection_id;
+  const connection_id = req.params.connection_id
 
   try {
-    const data = await management.connections.delete({ id: connection_id });
+    const data = await management.connections.delete({ id: connection_id })
     const payload = {
       status: 202,
       message: `Deleted connection ${connection_id}`,
       data,
     };
     const json = responseFormatter(req, res, payload);
-    res.status(payload.status).json(json);
+    res.status(payload.status).json(json)
   } catch (error) {
-    console.error("error", error);
-    handleError(req, res, error);
+    console.error("error", error)
+    handleError(req, res, error)
   }
 }
 

@@ -65,6 +65,10 @@ router.route('/:org_id/connections')
     checkJWTPermissions(['read:connections']),
     organizations.listEnabledConnections
   )
+  .post(
+    checkJWTPermissions(['create:connections']),
+    organizations.createEnabledConnection
+  )
 
 router.route('/:org_id/connections/:connection_id')
   .all(verifyJWT)
@@ -82,6 +86,10 @@ router.route('/:org_id/connections/:connection_id')
     checkJWTPermissions(['create:connections']),
     schemaValidator(organizations.schema.update),
     organizations.createEnabledConnection
+  )
+  .delete(
+    checkJWTPermissions(['update:connections']),
+    organizations.deleteConnection
   )
 
 router.route('/:org_id/invitations')

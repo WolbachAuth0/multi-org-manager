@@ -5,9 +5,9 @@ const cors = require('cors')
 const helmet = require('helmet')
 
 if (process.env.NODE_ENV !== 'production') {
-  console.log(`starting server in ${process.env.NODE_ENV} environment flag ...`)
   require('dotenv').config({ path: path.join(__dirname, './../.env') })
   require('dotenv').config({ path: path.join(__dirname, './../.env.development') })
+  console.log(`starting server in ${process.env.NODE_ENV} environment flag ...`)
 }
 
 const enforceHTTPS = require('./middleware/enforceHTTPS')

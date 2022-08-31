@@ -18,6 +18,7 @@ const scopes = [
   'delete:organization_invitations'
 ]
 const management = require('./../models/management')(scopes)
+const http = require('axios')
 
 module.exports = {
   list,
@@ -31,6 +32,7 @@ module.exports = {
   getEnabledConnection,
   createEnabledConnection,
   updateEnabledConnection,
+  deleteConnection,
   listInvitations,
   getInvitation,
   createInvitation,
@@ -280,17 +282,44 @@ async function getEnabledConnection (req, res) {
   }
 }
 
-// TODO: 
-async function createEnabledConnection (req, res) {
-  const id = req.params.org_id
-  const connection_id = req.params.connection_id
-  const body = Object.assign({ connection_id }, req.body)
+async function createEnabledConnection(req, res) {
+  const org_id = req.params.org_id
   try {
-    const data = await management.organizations.addEnabledConnection({ id }, body)
+    const { name, strategy, display_name, enabled_clients, options } = req.body
+    const authzConfiguration = await http.get(
+      `https://${options.discovery_url}`
+    )
+    const {
+      issuer,
+      authorization_endpoint,
+      token_endpoint,
+      userinfo_endpoint,
+      jwks_uri,
+    } = authzConfiguration.data
+    const data = await management.connections.create({
+      name,
+      strategy,
+      display_name,
+      enabled_clients,
+      metadata: { org_id },
+      options: {
+        issuer,
+        authorization_endpoint,
+        token_endpoint,
+        userinfo_endpoint,
+        jwks_uri,
+        ...options,
+      },
+    })
+    const connection = await management.organizations.addEnabledConnection(
+      { id: org_id },
+      { connection_id: data.id, assign_membership_on_login: true }
+    )
+
     const payload = {
       status: 200,
-      message: `Added connection to organization.`,
-      data 
+      message: `Added connection ${data.id} to organization ${org_id}.`,
+      data: connection,
     }
     const json = responseFormatter(req, res, payload)
     res.status(payload.status).json(json)
@@ -313,6 +342,24 @@ async function updateEnabledConnection (req, res) {
     const json = responseFormatter(req, res, payload)
     res.status(payload.status).json(json)
   } catch (error) {
+    handleError(req, res, error)
+  }
+}
+
+async function deleteConnection(req, res) {
+  const connection_id = req.params.connection_id
+
+  try {
+    const data = await management.connections.delete({ id: connection_id })
+    const payload = {
+      status: 202,
+      message: `Deleted connection ${connection_id}`,
+      data,
+    };
+    const json = responseFormatter(req, res, payload);
+    res.status(payload.status).json(json)
+  } catch (error) {
+    console.error("error", error)
     handleError(req, res, error)
   }
 }

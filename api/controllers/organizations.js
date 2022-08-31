@@ -18,7 +18,7 @@ const scopes = [
   'delete:organization_invitations'
 ]
 const management = require('./../models/management')(scopes)
-const httpClient = require('axios')
+const http = require('axios')
 
 module.exports = {
   list,
@@ -286,7 +286,7 @@ async function createEnabledConnection(req, res) {
   const org_id = req.params.org_id
   try {
     const { name, strategy, display_name, enabled_clients, options } = req.body
-    const authzConfiguration = await httpClient.get(
+    const authzConfiguration = await http.get(
       `https://${options.discovery_url}`
     )
     const {

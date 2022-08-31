@@ -283,19 +283,19 @@ async function getEnabledConnection (req, res) {
 }
 
 async function createEnabledConnection(req, res) {
-  const org_id = req.params.org_id;
+  const org_id = req.params.org_id
   try {
-    const { name, strategy, display_name, enabled_clients, options } = req.body;
+    const { name, strategy, display_name, enabled_clients, options } = req.body
     const authzConfiguration = await httpClient.get(
       `https://${options.discovery_url}`
-    );
+    )
     const {
       issuer,
       authorization_endpoint,
       token_endpoint,
       userinfo_endpoint,
       jwks_uri,
-    } = authzConfiguration.data;
+    } = authzConfiguration.data
     const data = await management.connections.create({
       name,
       strategy,
@@ -310,21 +310,21 @@ async function createEnabledConnection(req, res) {
         jwks_uri,
         ...options,
       },
-    });
+    })
     const connection = await management.organizations.addEnabledConnection(
       { id: org_id },
       { connection_id: data.id, assign_membership_on_login: true }
-    );
+    )
 
     const payload = {
       status: 200,
       message: `Added connection ${data.id} to organization ${org_id}.`,
       data: connection,
-    };
-    const json = responseFormatter(req, res, payload);
-    res.status(payload.status).json(json);
+    }
+    const json = responseFormatter(req, res, payload)
+    res.status(payload.status).json(json)
   } catch (error) {
-    handleError(req, res, error);
+    handleError(req, res, error)
   }
 }
 

@@ -8,7 +8,7 @@ import { Buffer } from 'buffer'
 
 /** Define a default action to perform after authentication */
 const DEFAULT_REDIRECT_CALLBACK = () => window.history.replaceState({}, document.title, window.location.pathname)
-const DEFAULT_REDIRECT_URI = `${process.env.VUE_APP_DOMAIN}/dashboard`
+const DEFAULT_REDIRECT_URI = `${process.env.VUE_APP_DOMAIN}/profile`
  
 let instance
 

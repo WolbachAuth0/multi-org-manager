@@ -125,9 +125,9 @@ export default {
 	computed: {
 		routes () {
 			const roles = this.$auth.isAuthenticated ? this.$auth.user['science-experiment/roles'] : []
-			const isAdmin = roles.includes('Organization Member Administrator')
+			const isAdmin = roles.includes('Administrator')
 			const isOwner = roles.includes('Organization Owner')
-			const isMember = roles.includes('Organization Member')
+			const isMember = roles.includes('Member')
 			let routes = [
 				{
 					title: 'Home',
@@ -180,9 +180,9 @@ export default {
 			}
 		},
 		async redirect (roles) {
-			const isAdmin = roles.includes('Organization Member Administrator')
+			const isAdmin = roles.includes('Administrator')
 			const isOwner = roles.includes('Organization Owner')
-			const isMember = roles.includes('Organization Member')
+			const isMember = roles.includes('Member')
 			let path = '/'
 			
 			if (isAdmin) {

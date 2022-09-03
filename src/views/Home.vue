@@ -1,7 +1,8 @@
 <template>
   <v-card>
+
     <v-card-title>
-      Organization Manager
+      <h2>Organization Manager</h2>
     </v-card-title>
 
     <v-tabs v-model="tab">

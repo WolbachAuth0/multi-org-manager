@@ -29,13 +29,22 @@
           </v-card-text>
 
           <v-card class="pa-6">
-            <v-list>
-              <v-list-item class="px-2">
-                <v-list-item-avatar>
-                  <img :src="profile.picture" :alt="profile.name">
-                </v-list-item-avatar>					
-              </v-list-item>
-            </v-list>
+            <v-row>
+              <v-col cols="2">
+                <v-list-item class="px-2">
+                  <v-list-item-avatar>
+                    <img :src="profile.picture" :alt="profile.name">
+                  </v-list-item-avatar>
+                  <v-list-item-title>
+                    Avatar
+                  </v-list-item-title>
+                </v-list-item>
+              </v-col>
+
+              <v-col cols="8">
+                <v-text-field v-model="profile.picture" label="Picture URL" :disabled="isDisabled"></v-text-field>
+              </v-col>
+            </v-row>
 
             <v-row>
               <v-col cols="3">

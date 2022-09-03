@@ -24,12 +24,47 @@
             User Profile
           </v-card-title>
 
-        <v-card class="pa-6">
           <v-card-text>
-            This is the place where the user profile is displayed and modified.
+            Manage your personal, contact, and security information.
           </v-card-text>
 
+          <v-card class="pa-6">
+            <v-list>
+              <v-list-item class="px-2">
+                <v-list-item-avatar>
+                  <img :src="profile.picture" :alt="profile.name">
+                </v-list-item-avatar>					
+              </v-list-item>
+            </v-list>
+
+            <v-row>
+              <v-col cols="3">
+                <v-text-field v-model="profile.given_name" label="First Name" :disabled="isDisabled"></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field v-model="profile.family_name" label="Last Name" :disabled="isDisabled"></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field v-model="profile.email" label="Email" disabled></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field v-model="profile.nickname" label="Nickname" :disabled="isDisabled"></v-text-field>
+              </v-col>
+            </v-row>
           </v-card>
+
+          <v-divider></v-divider>
+
+          <v-card-text v-if="isDisabled">
+            NOTE: We cannot update the user profile when the user comes in from the {{ connection }} connection. Please
+            update the user profile with that identity provider.
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn color="primary" @click="saveChanges" :disabled="isDisabled">
+              Save Changes
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -47,16 +82,24 @@ export default {
     return {
       tab: 0,
       org: {},
+      profile: {},
       orgAvailable: false,
     }
   },
   async created () {
-    const response = await this.fetchOrg()
-    this.org = response.data
-    if (process.env.VUE_APP_MODE === 'development') {
-      console.log('mounted: Members')
-      console.log(response.data)
+    const org = await this.fetchOrg()
+    const profile = await this.fetchProfile()
+    this.org = org.data
+    this.profile = {
+      email: profile.data.email,
+      given_name: profile.data.given_name,
+      family_name: profile.data.family_name,
+      nickname: profile.data.nickname,
+      name: profile.data.name,
+      picture: profile.data.picture
     }
+      
+    console.log(profile.data)
   },
   computed: {
     logoIsAvailable () {
@@ -64,6 +107,12 @@ export default {
     },
     orgNameIsAvailable () {
       return this.org && this.org.display_name
+    },
+    connection () {
+      return this.$auth.user.sub.split('|')[0]
+    },
+    isDisabled () {
+      return !['auth0', 'email', 'sms'].includes(this.connection)
     }
   },
   methods: {
@@ -71,6 +120,33 @@ export default {
       const orgID = this.$auth.user.org_id
       const accesstoken = await this.$auth.getTokenSilently()
       const response = await this.$http(accesstoken).get(`/organizations/${orgID}`)
+      return response.data
+    },
+    async fetchProfile () {
+      const userId = this.$auth.user.sub
+      const accesstoken = await this.$auth.getTokenSilently()
+      const response = await this.$http(accesstoken).get(`/users/${userId}`)
+      return response.data
+    },
+    async saveChanges () {
+      const accesstoken = await this.$auth.getTokenSilently()
+      const body = {
+        given_name: this.profile.given_name,
+        family_name: this.profile.family_name,
+        nickname: this.profile.nickname,
+        name: this.profile.name,
+        picture: this.profile.picture
+      }
+      const response = await this.$http(accesstoken).patch(`/users/${this.$auth.user.sub}`, body)
+      const announcement = {
+        text: response.data.message,
+        type: response.data.success ? 'success' : 'error',
+        top: true,
+        right: true,
+        left: false
+      }
+      EventBus.$emit('announce', announcement)
+      console.log(response.data)
       return response.data
     }
   }

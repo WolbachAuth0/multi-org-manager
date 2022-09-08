@@ -82,6 +82,8 @@
 </template>
 
 <script>
+import EventBus from './../helpers/eventBus.js'
+
 export default {
   name: 'Profile',
   metaInfo: {

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from '@/App.vue'
 import router from './router'
-// import store from './store'
+import store from './store'
 
 import Axios from './plugins/axios'
 import vuetify from '@/plugins/vuetify'
@@ -25,7 +25,7 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
-  // store,
+  store,
   vuetify,
   render: function (h) {
     return h(App)

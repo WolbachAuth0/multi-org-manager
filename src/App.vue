@@ -97,8 +97,6 @@ export default {
 
 <style scoped>
 	main.gradient {
-		/* background-image: linear-gradient(#CFD8DC, #54558d); */
-		/* background-image: linear-gradient(#1E88E5, #CFD8DC); */ 
 		background-image: linear-gradient(#4c73b8, #CFD8DC);
 	}
 </style>

@@ -11,7 +11,6 @@
           <v-text-field v-model="org.name" 
                         :label="labels.name"
                         :hint="hints.name"
-                        :disabled="readOnly"
           ></v-text-field>
           <v-card-text class="grey--text">{{ hints.name }}</v-card-text>
         </v-col>
@@ -20,7 +19,6 @@
           <v-text-field v-model="org.display_name"
                         :label="labels.display_name"
                         :hint="hints.display_name"
-                        :disabled="readOnly"
           ></v-text-field>
           <v-card-text class="grey--text">{{ hints.display_name }}</v-card-text>
         </v-col>
@@ -44,7 +42,6 @@
                             :label="labels.logo_url" 
                             :hint="hints.logo_url"
                             prepend-icon="mdi-link-variant"
-                            :disabled="readOnly"
               ></v-text-field>
               <!-- <v-card-text class="grey--text">{{ hints.logo_url }}</v-card-text> -->
             </v-col>
@@ -190,10 +187,6 @@ export default {
     }    
   },
   computed: {
-    readOnly () {
-      // TODO: see if the access token has the update:organization permission.
-      return false
-    },
     metadataLimit () {
       const count = Object.keys(this.metadata.items).length
       return 10 - count

@@ -296,6 +296,7 @@ async function createEnabledConnection(req, res) {
       userinfo_endpoint,
       jwks_uri,
     } = authzConfiguration.data
+
     const data = await management.connections.create({
       name,
       strategy,

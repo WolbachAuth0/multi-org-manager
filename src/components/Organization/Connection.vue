@@ -1,5 +1,9 @@
 <template>
-  <v-dialog width="40%" v-model="isShown">
+  <v-dialog 
+    width="40%"
+    :value="dialog"
+    @input="$emit('input', $event)"  
+  >
     <div class="d-flex justify-center">
       <v-card width="100%">
         <v-toolbar dark color="secondary">
@@ -10,7 +14,7 @@
           <v-spacer></v-spacer>
           
           <v-toolbar-items>
-            <v-btn icon dark @click="isShown = false" >
+            <v-btn icon dark @click="close" >
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-toolbar-items>
@@ -71,9 +75,15 @@ import EventBus from '../../helpers/eventBus.js'
 
 export default {
   name: 'Connection',
+  model: {
+    prop: 'dialog',
+    event: 'input'
+  },
+  props: {
+    dialog: Boolean
+  },
   data () {
     return {
-      isShown: false,
       oidc: {
         syncUser: {
           value: true,
@@ -97,24 +107,10 @@ export default {
       }
     }
   },
-  props: {
-    org: { type: Object },
-    visible: { type: Boolean }
-  },
-  watch: {
-    visible (newValue, oldValue) {
-      this.isShown = newValue
-      console.log('connection: visible changed', newValue, oldValue)
-    },
-    isShown(newValue, oldValue) {
-      if (newValue) {
-        this.$emit('show', true)
-      } else {
-        this.$emit('hide', false)
-      }
-    }
-  },
   methods: {
+    close() {
+      this.$emit("close-dialog")
+    },
     async createConnection () {
       const orgID = this.$auth.user.org_id
       const accesstoken = await this.$auth.getTokenSilently()
@@ -128,12 +124,14 @@ export default {
           discovery_url: issuerURL.value
         }
       }
-      try {
-        const response = await this.$http(accesstoken).post(`/organizations/${orgID}/connections`, newConnection)
-        
-      } catch (err) {
+      // try {
+      //   const response = await this.$http(accesstoken).post(`/organizations/${orgID}/connections`, newConnection)
 
-      }
+      // } catch (err) {
+
+      // }
+      this.$emit('submit-connection', newConnection)
+      // this.$emit('close-dialog')
       
     },
 

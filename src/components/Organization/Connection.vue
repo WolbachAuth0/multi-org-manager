@@ -112,8 +112,6 @@ export default {
       this.$emit("close-dialog")
     },
     async createConnection () {
-      const orgID = this.$auth.user.org_id
-      const accesstoken = await this.$auth.getTokenSilently()
       const { connectionName, issuerURL, clientID } = this.$data.oidc;
       const newConnection = {
         name: connectionName.value,
@@ -124,15 +122,7 @@ export default {
           discovery_url: issuerURL.value
         }
       }
-      // try {
-      //   const response = await this.$http(accesstoken).post(`/organizations/${orgID}/connections`, newConnection)
-
-      // } catch (err) {
-
-      // }
       this.$emit('submit-connection', newConnection)
-      // this.$emit('close-dialog')
-      
     },
 
     autofillConnection() {

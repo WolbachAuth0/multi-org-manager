@@ -28,6 +28,15 @@ const router = new Router({
       component: Home
     },
     {
+      path: '/login',
+      redirect (to) {
+        return {
+          path: `https://${process.env.VUE_APP_CUSTOM_DOMAIN}/authorize`,
+          query: to.query
+        }
+      }
+    },
+    {
       path: '/tokens',
       name: 'Tokens',
       component: Tokens,

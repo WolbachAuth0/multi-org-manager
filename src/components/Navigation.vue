@@ -56,7 +56,7 @@
 			<v-divider v-if="!$auth.isAuthenticated"></v-divider>
 
 			<v-list v-if="!$auth.isAuthenticated" dense nav>
-				<v-list-item  v-for="(item, i) in organizations" :key="i" @click="authenticate(item.id)">
+				<v-list-item  v-for="(item, i) in organizations" :key="i" @click="authenticate(item)">
 					<v-list-item-icon>
 						<div class="rounded-circle d-inline-block white p-4">
 							<v-img :src="item.branding.logo_url" max-height="25" max-width="25" ></v-img>
@@ -124,9 +124,8 @@ export default {
 	}),
 	computed: {
 		routes () {
-			const roles = this.$auth.isAuthenticated ? this.$auth.user['science-experiment/roles'] : []
+			const roles = this.getRoles()
 			const isAdmin = roles.includes('Administrator')
-			const isOwner = roles.includes('Organization Owner')
 			const isMember = roles.includes('Member')
 			let routes = [
 				{
@@ -163,9 +162,14 @@ export default {
 	async mounted () {
     const orgs = await this.getOrganizations()
     this.organizations = orgs.data
-		console.log(this.organizations)
+		if (process.env.VUE_APP_MODE === 'development') {
+			console.log(this.organizations)
+		}
   },
 	methods: {
+		getRoles () {
+			return this.$auth.isAuthenticated ? this.$auth.user['science-experiment/roles'] : []
+		},
 		async getOrganizations () {
       const response = await this.$http(null).get(`/organizations`)
       return response.data
@@ -198,7 +202,12 @@ export default {
 			if (!this.$auth.isAuthenticated) {
 				const options = {
 					scope: 'openid profile email',
-					organization
+				}
+				if (organization) {
+					options.organization = organization.id
+				} 
+				if (organization?.metadata?.passwordless) {
+					options.connection = organization.metadata.passwordless
 				}
 				this.$auth.loginWithRedirect(options)
 			}

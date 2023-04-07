@@ -60,7 +60,7 @@ export default {
       }
 		}
 	},
-	mounted() {
+	async mounted() {
 		if (process.env.VUE_APP_MODE === 'development') {
 			console.log('node_env: ', process.env.NODE_ENV)
 			console.log('clientid: ', process.env.VUE_APP_AUTH0_CLIENT_ID)
@@ -70,7 +70,7 @@ export default {
 			console.log('vue app audience: ', process.env.VUE_APP_AUTH0_AUDIENCE)
 		}
 		EventBus.$on('announce', this.makeAnnouncement)
-	},
+  },
 	methods: {
 		makeAnnouncement ({ text='announcement text', type='success', top=true, right=true, left=false }) {
 			this.alert.text = text

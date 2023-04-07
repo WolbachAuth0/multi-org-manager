@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {%- auth0:head -%}
+    {% if organization && Object.keys(organization.metadata).includes('background') %}
+      <style>
+        body {
+          background-image: url("{{ organization.metadata.background }}");
+        }
+      </style>
+    {% else %}
+      <style>
+        body {
+          background-image: url("https://raw.githubusercontent.com/oktadev/.github/main/images/okta-dev-header.png");
+        }
+      </style>
+    {% endif %}
+   
+    <style>
+      body {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .row {
+        display: flex;
+      }
+      .column {
+        flex: 50%;
+        padding: 10px;
+      }
+      .prompt-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        justify-content: center;
+      }
+    </style>
+
+  </head>
+  <body class="_widget-auto-layout">
+     
+    <div class="row">
+      <div class="column">
+               
+      </div>
+      <div class="column"></div>
+      <div class="column">
+        <div class="prompt-wrapper">
+          {%- auth0:widget -%}
+        </div>
+      </div>
+    </div>
+    
+  </body>
+</html>

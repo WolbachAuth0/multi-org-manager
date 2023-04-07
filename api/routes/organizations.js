@@ -74,7 +74,7 @@ router.route('/:org_id/connections/:connection_id')
   .all(verifyJWT)
   .all(checkJWTOrgID)
   .get(
-    checkJWTPermissions(['update:connections']),
+    checkJWTPermissions(['read:connections']),
     organizations.getEnabledConnection
   )
   .patch(
@@ -88,7 +88,7 @@ router.route('/:org_id/connections/:connection_id')
     organizations.createEnabledConnection
   )
   .delete(
-    checkJWTPermissions(['update:connections']),
+    checkJWTPermissions(['delete:connections']),
     organizations.deleteConnection
   )
 

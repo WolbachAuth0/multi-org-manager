@@ -15,11 +15,15 @@ const options = {
   },
   getters: {
     orgs () {},
-    organization () {}
+    async organizations () {
+      const response = await this.$http(null).get(`/organizations`)
+      return response.data
+    }
   },
   mutations: {
 
   }
 }
 
-export const store = new Vuex.Store(options)
+const store = new Vuex.Store(options)
+export default store

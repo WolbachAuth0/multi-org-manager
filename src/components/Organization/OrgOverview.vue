@@ -7,7 +7,7 @@
     
     <v-card class="pa-6">
       <v-row>
-        <v-col cols="6">
+        <v-col cols="5">
           <v-text-field v-model="org.name" 
                         :label="labels.name"
                         :hint="hints.name"
@@ -15,12 +15,20 @@
           <v-card-text class="grey--text">{{ hints.name }}</v-card-text>
         </v-col>
 
-        <v-col cols="6">
+        <v-col cols="5">
           <v-text-field v-model="org.display_name"
                         :label="labels.display_name"
                         :hint="hints.display_name"
           ></v-text-field>
           <v-card-text class="grey--text">{{ hints.display_name }}</v-card-text>
+        </v-col>
+
+        <v-col cols="2">
+          <v-checkbox
+            v-model="org.enableMFA"
+            :label="labels.enableMFA"
+            :hint="hints.enableMFA"
+          ></v-checkbox>
         </v-col>
       </v-row>
     </v-card>
@@ -35,15 +43,21 @@
     <v-card class="pa-6">
       <v-row>
         <v-col cols="6">
-          <!-- LOGO URL -->
+          
           <v-row>
             <v-col cols="12">
+              <!-- LOGO URL -->
               <v-text-field v-model="org.branding.logo_url" 
                             :label="labels.logo_url" 
                             :hint="hints.logo_url"
                             prepend-icon="mdi-link-variant"
               ></v-text-field>
-              <!-- <v-card-text class="grey--text">{{ hints.logo_url }}</v-card-text> -->
+              <!-- BACKGROUND IMAGE URL -->
+              <v-text-field v-model="org.branding.backgroundImage" 
+                            :label="labels.backgroundImage" 
+                            :hint="hints.backgroundImage"
+                            prepend-icon="mdi-link-variant"
+              ></v-text-field>
             </v-col>
           </v-row>
 
@@ -123,6 +137,28 @@
               <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
         </template>
+
+        <!-- NOTE: The edit value template should be removed. -->
+
+        <!-- <template v-slot:[`item.value`]="props">
+          <v-edit-dialog
+            :return-value.sync="props.item.value"
+            @save="save"
+            @cancel="cancel"
+            @open="open"
+            @close="close"
+          >
+            {{ props.item.value }}
+            <template v-slot:input>
+              <v-text-field
+                v-model="props.item.value"
+                label="Edit"
+                single-line
+              ></v-text-field>
+            </template>
+          </v-edit-dialog>
+        </template> -->
+
       </v-data-table>
     </v-card>
 
@@ -151,14 +187,18 @@ export default {
       labels: {
         name: 'Name',
         display_name: 'Display Name',
+        enableMFA: 'Enforce Multifactor Authentication',
         logo_url: 'Logo URL',
+        backgroundImage: 'Background Image',
         primary: 'Primary Color',
         background: 'Page Background Color'
       },
       hints: {
         name: 'This is any human-readable identifier for the organization that will be used by end-users to direct them to their organization in your application.',
         display_name: 'If set, this is the name that will be displayed to end-users for this organization in any interaction with them.',
+        enableMFA: 'If checked, then users of this organization will be required to provide Multi-Factor Authentication.',
         logo_url: 'If set, this is the logo that will be displayed to end-users for this organization in any interaction with them.',
+        backgroundImage: 'This is the url to the background image which will be displaid in the login screen.',
         primary: 'If set, this will be the primary color for CTAs that will be displayed to end-users for this organization in your application\'s authentication flows.',
         background: 'If set, this will be the page background color that will be displayed to end-users for this organization in in your application\'s authentication flows.'
       },
@@ -166,12 +206,14 @@ export default {
         id: 'org_DnITNWXfRvtMKNu6',
         name: 'circle-org',
         display_name: 'Organization of Circular Things',
+        enableMFA: false,
         branding: {
           logo_url: 'https://cdn.worldvectorlogo.com/logos/puppet.svg',
           colors: {
             primary: '#7C64A5',
             page_background: '#322D6B'
-          }
+          },
+          backgroundImage: 'https://raw.githubusercontent.com/oktadev/.github/main/images/okta-dev-header.png',
         }
       },
       metadata: {
@@ -189,10 +231,13 @@ export default {
   computed: {
     metadataLimit () {
       const count = Object.keys(this.metadata.items).length
-      return 10 - count
+      return 8 - count
     },
     metadataObject () {
-      const metadata = {}
+      const metadata = {
+        background: this.org.branding.backgroundImage,
+        enable_mfa: this.org.enableMFA ? 'true' : 'false' // the metadata has to be a string
+      }
       for (let item of this.metadata.items) {
         metadata[item.key] = item.value
       }
@@ -212,12 +257,14 @@ export default {
     this.org.id = org.id
     this.org.name = org.name
     this.org.display_name = org.display_name
+    this.org.enableMFA = String(org.metadata['enable_mfa']).toLowerCase() == 'true' ? true : false 
     this.org.branding = {
       logo_url: org.branding.logo_url,
       colors: {
         primary: org.branding.colors.primary,
         page_background: org.branding.colors.page_background
-      }
+      },
+      backgroundImage: org.metadata['background'] || 'https://raw.githubusercontent.com/oktadev/.github/main/images/okta-dev-header.png'
     }
 
     this.metadata.items = Object.keys(org.metadata)
@@ -228,6 +275,8 @@ export default {
           index: key
         }
       })
+      .filter(item => !['background', 'enable_mfa'].includes(item.key))
+
   },
   methods: {
     async fetchOrg () {
@@ -261,6 +310,9 @@ export default {
       EventBus.$emit('announce', announcement)
 
       return response.data
+    },
+    editMetadata () {
+
     },
     addMetadata () {
       // is this key already in the metadata?

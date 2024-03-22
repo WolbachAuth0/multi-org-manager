@@ -12,7 +12,7 @@
 							 @hide="hide"
 		></announcer>
 
-		<!-- <youtube-background></youtube-background> -->
+		<github-ribbon :url="github"/>
 		
 		<v-fade-transition mode="out-in" duration type="animation">
 			<v-main class="gradient" light>	
@@ -35,21 +35,22 @@
 <script>
 import Announcer from './components/Announcer.vue'
 import Navigation from './components/Navigation.vue'
-import YoutubeBackground from './components/YoutubeBackground.vue'
 import EventBus from './helpers/eventBus.js'
+import GithubRibbon from './components/GithubRibbon.vue'
 
 export default {
 	name: 'app',
 	components: {
 		Announcer,
 		Navigation,
-		YoutubeBackground
+		GithubRibbon
 	},
 	metaInfo: {
 		titleTemplate: 'Organization Manager | %s'
 	},
 	data() {
 		return {
+			github: 'https://github.com/WolbachAuth0/multi-org-manager',
 			alert: {
         visible: false,
         text: '',

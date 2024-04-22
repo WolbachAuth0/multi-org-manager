@@ -202,6 +202,7 @@ export default {
 			if (!this.$auth.isAuthenticated) {
 				const options = {
 					scope: 'openid profile email',
+					my_state_parameter: 'value passed from client at login time'
 				}
 				if (organization) {
 					options.organization = organization.id
